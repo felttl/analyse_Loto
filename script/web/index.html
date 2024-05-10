@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>analyse Loto</title>
+    <!-- external module import -->
+    <script src="path/to/chartjs/dist/chart.umd.js"></script>
+    <script type="module" src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+    <input type="button" value="up" onclick="csv2json()">
+    <section id="graph">
+
+    </section>    
+    <section id="sLoto">
+        <h3>debugg zone</h3>
+        <div id="debug">
+
+        </div>
+    </section>
+<script>
+    console.log("message important !!!")    
+    csv2json("../../données/normal_loto/1 normal_mai1976-oct2008.csv")
+    var infos = document.getElementById("debug")
+    idiotfunction()
+    csv2json()
+    window.alert("ah")
+    console.log("ça marche pas")
+
+</script>    
+</body>
+</html>
