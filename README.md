@@ -2,48 +2,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link style="css" href="./style.css">
 </head>
-<style>
-@font-face {
-  font-family: Fredoka-Regular; 
-  font-family: Fredoka-Medium;  
-  font-family: Fredoka-Bold;  
-  font-family: Fredoka-SemiBold; 
-}
-@font-face {
-  src: url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap'); 
-}
-*{
-    font-family: fredoka;
-}
-h3,h4{
-  position: relative;
-  margin: auto 100px;
-  background-color: #ffffff11;    
-  display: inline-block;
-}
-h1,h2{
-  background-color: #ffffff21;  
-  vertical-align: center;  
-  margin: auto;
-  height: max-content;
-  width: 100%;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center !important; /*centrer le contenu texte ! trés important*/
-  color: red;
-}
-h1:hover{
-  color: #000f;
-  background-color: #ff000099;
-}
-h2{
-  color: skyblue;
-}
-p{
-  margin:auto;
-}
-</style>
+
 
 # Series de Fourier
 
