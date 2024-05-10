@@ -56,10 +56,7 @@ p{
 
 ## Théorème de Dirichlet
 
-$$
-a_0 + \sum ^{+\infty}_{p=1} (a_n * cos(n*\omega * t)+b_n sin(n * \omega * t))
-
-$$
+$$a_0 + \sum ^{+\infty}_{p=1} (a_n * cos(n*\omega * t)+b_n sin(n * \omega * t))$$
 
 ## Théorème de Parceval
 
