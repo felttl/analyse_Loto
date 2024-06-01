@@ -3,14 +3,19 @@ import { isSet } from "util/types"
 /**
  * gestion des données par fréquence (QTD)
  */
-export class LotoDataAnalyse{
+export class LotoAnalyser{
 
     #titles = []
+    #crudeData = []
     #data = []
 
-    constructor (anyFormatData,title) {
-        this.#data.push(anyFormatData)
+    constructor (jsonData,title) {
+        this.#crudeData.push(jsonData)
         this.#titles.push(title)
+        // initialisation des frequences
+        for (let i = 1; i < 50; i++) {
+            this.#data[i] = 0
+        }
     }
 
     /**

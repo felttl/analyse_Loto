@@ -1,9 +1,9 @@
 
-import { readFileSync } from 'fs';
+import { readFileSync } from './fs';
 // import Chart from '/chart.js/auto';
 
 // parse test
-function csv2json() {
+export function csv2json() {
 
 
     //const csv = readFileSync(filename, 'utf-8');

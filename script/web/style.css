@@ -12,5 +12,8 @@ section{
     background-color: #4b4b4b;
 }
 
+#graph :first-child{
+    background-color: #cdcdcd;
+}
 
 /* end page */
