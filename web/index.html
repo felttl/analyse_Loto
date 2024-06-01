@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>analyse Loto</title>
+    <!-- our tooling -->
+    <script type="module" src="../script/script.js"></script>
+    <script type="module" src="../script/DataManager.class.js"></script>    
+    <!-- css rules -->
+    <link type="text/css" rel="stylesheet" href="style.css">    
+    <!-- external module(s) importing -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>analyse de loto</h1>
+    </header>    
+    <main>
+        <section id="graph">
+            <h3>frequences des nombres tirés :</h3>
+            <canvas id="vizualgraph">
+            </canvas>
+        </section>    
+        <section id="sLoto">
+            <h3>debugg zone</h3>
+            <div id="debug">
+
+            </div>
+        </section>        
+    </main>
+</body>
+
+<script type="text/javascript"> 
+    //csv2json("../données/normal_loto/1 normal_mai1976-oct2008.csv")
+    // var infos = document.getElementById("debug")
+    // idiotfunction()
+    // csv2json()
+    // window.alert("ah")
+    // console.log("ça marche pas")
+    const labels = [34, "chart 2"]
+    const ctx = document.getElementById("vizualgraph")
+    const data = {
+        labels: labels,
+        datasets: [{
+                label: '1er dataset',
+                data: [65, 59, 80, 81, 56, 55, 40],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            },
+            {   label: '2e dataset',
+                data: [10, 23, 32, 43, 1, 4, 6],
+                fill: "auto",
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1,
+                borderColor: "#414acb",
+                backgroundColor: "grey"
+            }
+        ]
+    };
+    const config = {
+        type: 'line',
+        data: data
+    };
+    const chart = new Chart(ctx, config)
+
+</script>    
+</html>

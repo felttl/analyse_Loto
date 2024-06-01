@@ -1,3 +1,4 @@
+import { json } from "stream/consumers"
 import { isSet } from "util/types"
 
 /**
@@ -5,18 +6,19 @@ import { isSet } from "util/types"
  */
 export class LotoAnalyser{
 
-    #titles = []
-    #crudeData = []
-    #data = []
+    #titles = [] // array
+    #crudeData = [] // array
+    #data = [] // freqs
+
 
     constructor (jsonData,title) {
-        this.#crudeData.push(jsonData)
-        this.#titles.push(title)
+        this.addData(jsonData,title)
         // initialisation des frequences
         for (let i = 1; i < 50; i++) {
             this.#data[i] = 0
         }
     }
+
 
     /**
      * autorise la supperposition avec une couleur différente
@@ -24,16 +26,18 @@ export class LotoAnalyser{
      * @param {*} title titre des données
      */
     addData(data,title){
-        this.constructor(data,title)
+        this.#crudeData.push(data)
+        this.#titles.push(title)        
     }
 
+    /**
+     * renvoie une liste de fréquences pour les 49 chiffres
+     */
     get frequency(){
-        var res = []
         for (let i = 0; i < array.length; i++) {
-            if(isSet(res[i]))
-                res[i]++
-            else
-                res[i]=1
+            res.push(0)
+            if(i == data_subnote_json[i])
+                res[i]++    
         }
         return res
     }

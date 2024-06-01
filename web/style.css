@@ -1,0 +1,131 @@
+/* 
+  @autors : felix ttl
+  @date: 1/6/2024
+  @version: 1.0.2
+*/
+
+/*fonts -------------------------------------- */
+@font-face {
+  font-family: Fredoka-Regular;
+  src: url('../font/Fredoka/static/Fredoka-Regular.ttf'); 
+}
+
+@font-face {
+  font-family: Fredoka-Medium;
+  src: url('../font/Fredoka/static/Fredoka-Medium.ttf'); 
+}
+
+@font-face {
+  font-family: Fredoka-Bold;
+  src: url('../font/Fredoka/static/Fredoka-Bold.ttf'); 
+}
+
+@font-face {
+  font-family: Fredoka-SemiBold;
+  src: url('../font/Fredoka/static/Fredoka-SemiBold.ttf'); 
+}
+/* end fonts --------------------------------------   */
+
+
+:root{
+    --border-radius-g: 20px;
+    --col-th-1: #6a76ffab;
+    --col-th-2: #7a7a7a;
+    --col-th-2-op: #0000007b; 
+    --col-th-3: #ffb2b2;
+    --col-th-4: #ffffff6a;
+    --col-th-bg: #00000016;
+    --content-width-main-flow: 90vw;
+    --content-sep-gap-main-flow: 30px;
+    --sub-content-gap-padding: 10px;
+    --test: #414acb;
+}
+#graph{
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.197);
+  position: relative;
+}
+*{
+    background-color: var(--col-th-bg);
+    font-family: Fredoka-Regular;
+    margin: 0 auto;
+}
+html{
+  background-color: transparent;
+}
+
+section{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+#vizualgraph{
+    margin: 20px auto;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+header{
+    width: var(--content-width-main-flow);
+    height: 100px;
+    background-color: var(--col-th-1);
+    border-radius: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;   
+    margin: 0 auto;
+    margin-bottom: var(--content-sep-gap-main-flow); 
+    text-align: center;
+    padding: 10px;
+}
+
+header h1{
+    width: max-content;
+    height: min-content;
+    background-color: transparent;
+    color: black;
+    padding: 20px;
+    border-radius: var(--border-radius-g);
+    margin: 10px auto 10px auto;
+    position: relative;
+
+}
+
+main{
+    width: var(--content-width-main-flow);
+    background-color: var(--col-th-4);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative;
+    height: auto;
+    display: flexbox;
+    padding: var(--sub-content-gap-padding);
+    
+}
+main * {
+  border-radius: 20px;
+}
+main :where(p,span,h1,h2,h3,h4,h5,h6){
+  width: max-content;
+  height: max-content;
+  padding: 10px;
+  margin: 0;
+}
+
+h2,h3,h4{
+  background-color: transparent;
+  text-underline-offset: 5px;
+}
+h2{
+  text-decoration: underline 10px rgb(187, 63, 63);  
+}
+h3{
+  text-decoration: underline 10px rgb(43, 93, 168);
+}
+h4{
+  text-decoration: underline 10px rgb(50, 136, 44);  
+}
+
+
+/* end page */
