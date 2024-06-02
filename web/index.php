@@ -6,7 +6,7 @@
     <title>analyse Loto</title>
     <!-- our tooling -->
     <script type="module" src="../script/script.js"></script>
-    <script type="module" src="../script/DataManager.class.js"></script>    
+    <script type="module" src="../script/LotoAnalyser.class.js"></script>    
     <!-- css rules -->
     <link type="text/css" rel="stylesheet" href="style.css">    
     <!-- external module(s) importing -->
@@ -26,19 +26,33 @@
         <section id="sLoto">
             <h3>debugg zone</h3>
             <div id="debug">
-
+                <!-- eaziest way to convert csv to json  -->
+                <?php 
+                    $csvFileContent= file_get_contents('../../données/normal_loto/1 normal_mai1976-oct2008.csv');
+                    $csvLineArray = explode("\n", $csvFileContent);
+                    $result = array_map("str_getcsv", $csvLineArray);
+                    $jsonObject = json_encode($result);
+                    print_r($jsonObject);
+                ?>
             </div>
         </section>        
     </main>
 </body>
 
 <script type="text/javascript"> 
+    let crudeData = ""
+    // traitement des données
+    let traitement = new LotoAnalyser(
+        crudeData
+    );
+
     //csv2json("../données/normal_loto/1 normal_mai1976-oct2008.csv")
     // var infos = document.getElementById("debug")
     // idiotfunction()
     // csv2json()
     // window.alert("ah")
     // console.log("ça marche pas")
+    const titlePatternStart = "freq de "
     const labels = [34, "chart 2"]
     const ctx = document.getElementById("vizualgraph")
     const data = {
