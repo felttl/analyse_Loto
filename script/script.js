@@ -9,7 +9,7 @@ export function csv2json() {
     //const csv = readFileSync(filename, 'utf-8');
 
     // Reading the file using default (fs npm package)
-    filename = '../../données/normal_loto/1 normal_mai1976-oct2008.csv'
+    filename = '../donnees/normal_loto/1 normal_mai1976-oct2008.csv'
     const fs = require("fs");
     csv = fs.readFileSync(filename)
     const array = csv.toString().split("\r");
