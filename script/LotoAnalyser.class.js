@@ -1,5 +1,27 @@
 // creates [1,2,3,4] by example (arrayrange(1,4,1))
 arrayRange=(a,b,c) => Array.from({length:(b-a)/c+1},(d,e)=>a+e*c)  
+zfill = (str,n)=>str.length < n ? str+("0".repeat(str.length-n)) : str
+
+function darkener(colorHex){
+	let res = "#"
+	let tmp = colorHex.substr(1) // remove '#'
+    for (let i=0;i<3;i++)
+    	res += Math.round(parseInt("0x"+tmp.substr(i*2,2))*0.9).toString(16)
+    return res
+}
+
+function getColorParts(partsNb){
+    let parts = 0xffffff/partsNb
+    let res = []
+    for (let i = 1; i < partsNb+1; i++) {
+        if(parts*i > 0x00ffff)
+            elem = ((((parts*i))%0x00ffff)*0x100).toString(16)
+        else
+            elem = parts*i
+        res.push("#"+zfill(elem,6))
+    }
+    return res
+}
 
 /**
  * gestion des données par fréquence (QTD)
@@ -11,8 +33,8 @@ class LotoAnalyser{
     #items = 0
 
 
-    constructor (jsonData,title) {
-        this.addData(jsonData,title)    
+    constructor (jsonData,title,color) {
+        this.addData(jsonData,title,color)    
     }
 
 
@@ -21,7 +43,7 @@ class LotoAnalyser{
      * @param {*} data données a jouter
      * @param {*} title titre des données
      */
-    addData(data,title){
+    addData(data,title,color){
         // initialisation des frequences
         let tpmFreq = []
         for (let i = 1; i < 50; i++) 
@@ -29,13 +51,23 @@ class LotoAnalyser{
         this.#crudeData.push(data)
         // on transforme l'entête (str) en tableau
         this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
+        this.#crudeData[this.#items].pop() // dernière ligne inutile
+        const darkColor = parseInt()
         this.#data.push(
-            {
-                titre: title,
-                freq: tpmFreq,
-                freqchance: [0,0,0,0,0,0,0,0,0,0],
-                nbtirages: this.#crudeData[this.#items][0].length
-            }
+            [
+                {
+                    titre: title,
+                    freq: tpmFreq,
+                    freqchance: [0,0,0,0,0,0,0,0,0,0],
+                    nbtirages: this.#crudeData[this.#items][0].length,
+                    color: color
+                },
+                {
+                    titre: title+"(n°chance)",
+                    freq: [0,0,0,0,0,0,0,0,0,0]
+                }              
+            ]
+
         )  
         this.#items++   
     }
@@ -45,10 +77,12 @@ class LotoAnalyser{
      * calcule les frequences pour toutes les données brutes d'entrée
      */
     get #frequency(){
+        const entete = this.#crudeData[0][0][0]
         for (let nbData=0;nbData<this.#items;nbData++ ){
             // si entête correcte
-            if(this.#crudeData[nbData]){
-                for (let i = 1; i < this.#data[nbData].nbtirages ; i++) {
+            //(this.#crudeData[0][2][0]+"").split(";")[5]
+            if(entete[4] == "boule_1" && entete[9] == "numero_chance"){
+                for (let i = 0; i < this.#data[nbData].nbtirages ; i++) {
                     for (let j = 5; j < 12;j++) {
                         (this.#crudeData[0][1][0]+"").split(";")
                         this.#crudeData[nbData][0][1][0]
@@ -117,9 +151,9 @@ class LotoAnalyser{
 
 
     debugg(){
-
         console.log(
-            (this.#crudeData[0][2][0]+"").split(";")[5]
+            (this.#crudeData[0][2][0]+"").split(";")[9]
+            
         )
     }
 }
