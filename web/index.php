@@ -67,16 +67,16 @@
     const data = {
         labels: labels,
         datasets: [{
-                label: '1er dataset',
-                data: [65, 59, 80, 81, 56, 55, null],
+                label: 'normal',
+                data: [65, 45, 35, 34, null, 4],
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1,
                 borderColor: "#cb41b9",
                 backgroundColor: "grey"                
             },
-            {   label: '2e dataset',
-                data: [10, 23, 32, 43, 1, 4, 6],
+            {   label: 'chance',
+                data: [null, null, null,89, 32],
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1,
