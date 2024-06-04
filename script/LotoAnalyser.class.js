@@ -11,14 +11,18 @@ function darkener(colorHex){
 }
 
 function getColorParts(partsNb){
-    let parts = 0xffffff/partsNb
-    let res = []
-    for (let i = 1; i < partsNb+1; i++) {
-        if(parts*i > 0x00ffff)
-            elem = ((((parts*i))%0x00ffff)*0x100).toString(16)
-        else
-            elem = parts*i
-        res.push("#"+zfill(elem,6))
+    let res = []    
+    if(partsNb > 0){
+        let parts = 0xffffff/partsNb
+        for (let i = 1; i < partsNb+1; i++) {
+            if(parts*i > 0x00ffff)
+                elem = ((((parts*i))%0x00ffff)*0x100).toString(16)
+            else
+                elem = parts*i
+            res.push("#"+zfill(elem,6))
+        }        
+    } else {
+        throw new Error(`number must be unsigned (x>0): input is ${partsNb}`)
     }
     return res
 }
@@ -31,7 +35,7 @@ class LotoAnalyser{
     #crudeData = [] // matrix (arrays)
     #data = []
     #items = 0
-
+    #sort = true // true by frequency else by order of draw
 
     constructor (jsonData,title,color) {
         this.addData(jsonData,title,color)    
@@ -46,70 +50,111 @@ class LotoAnalyser{
     addData(data,title,color){
         // initialisation des frequences
         let tpmFreq = []
-        for (let i = 1; i < 50; i++) 
+        let tmpFreqC = []
+        for (var i = 1; i < 50; i++){
             tpmFreq.push(0)
+            tmpFreqC.push(null)
+        }
+        // remplissage du vide pour la supperposition
+        for (var i = 1; i < 11; i++){ 
+            tpmFreq.push(null)
+            tmpFreqC.push(0) 
+        }        
         this.#crudeData.push(data)
-        // on transforme l'entête (str) en tableau
+        // on transforme l'entête (str) en tableau (lisiblité)
         this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
         this.#crudeData[this.#items].pop() // dernière ligne inutile
-        const darkColor = parseInt()
         this.#data.push(
-            [
-                {
+            {
+                normal: {
                     titre: title,
                     freq: tpmFreq,
-                    freqchance: [0,0,0,0,0,0,0,0,0,0],
-                    nbtirages: this.#crudeData[this.#items][0].length,
                     color: color
                 },
-                {
+                chance: {
                     titre: title+"(n°chance)",
-                    freq: [0,0,0,0,0,0,0,0,0,0]
-                }              
-            ]
-
-        )  
+                    freq: tmpFreqC,
+                    color: darkener(color)
+                },
+                nbtirages: this.#crudeData[this.#items][0].length
+            }
+        )
         this.#items++   
     }
 
     /**
-     * renvoie une liste de fréquences pour les 49 chiffres
-     * calcule les frequences pour toutes les tirages normaux et "numero chance"
-     * - a utiliser 1 fois a la fin de tous les enregistrements
+     * calcule toutes les fréquences d'apparition des numéros de 1 a 49 (inclus)
+     * des 6 numéros tirés a chaque jours (par jeux de données)
+     * en plus du numéro chance valant entre 1 et 9 (inclus)
      */
     get #frequency(){
-        const entete = this.#crudeData[0][0][0]
-        for (let nbData=0;nbData<this.#items;nbData++ ){
+        for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
+            let entete = this.#crudeData[this.#items][0][0]
             // si entête correcte
-            //(this.#crudeData[0][2][0]+"").split(";")[5]
-            if(entete[4] === "boule_1" && entete[9] === "numero_chance"){
-                for (let i = 0; i < this.#data[nbData].nbtirages ; i++) {
-                    for (let j = 5; j < 12;j++) {
-                        (this.#crudeData[0][1][0]+"").split(";")
-                        this.#crudeData[nbData][0][1][0]
+            if(entete[4] === "boule_1" && entete[9] === "numero_chance"){ 
+                for (let day = 0; day < this.#data[nbData].nbtirages ; day++) {
+                    for (let num = 4; num < 8;num++) {
+                        if(this.#sort) // freq mode
+                            this.#data[nbData].normal.freq[this.#crudeData[nbData][day][num]]++
                     }
+                    if(this.#sort)
+                        this.#data[nbData].chance.freq[this.#crudeData[nbData][day][num]]++
                 }                   
             } else {
                 throw new Error("entête de fichier incorrect: "+ entete)
             }
-         
         }
+    }
+
+    /**
+     * switch :
+     *  - by order of draw
+     *  - by number frequency
+     */
+    toggleSort(){
+        this.#sort = !this.#sort
+    }
+
+    get isSortedByFreq(){
+        return this.#sort
     }
 
     /**
      * renvoie une configuration pour un rendu Chart.js
      */
     get renderConf(){
+
+        // datasets: [{
+        //     label: 'normal',
+        //     data: [65, 45, 35, 34, null, 4],
+        //     fill: false,
+        //     borderColor: 'rgb(75, 192, 192)',
+        //     tension: 0.1,
+        //     backgroundColor: "grey"                
+        // },
+
+
         const titlePatternStart = "freq de "
         let loterylabels = arrayRange(1,49,1)
-        for (let i = 0; i < numlabels.length; i++) {
-            numlabels[i] = titlePatternStart+numlabels[i]
+        for (let i = 0; i < loterylabels.length; i++) {
+            loterylabels[i] = titlePatternStart+loterylabels[i]
         }        
-        let tmpDataset = []
-        for (i = 0; i < array.length; i++) {
-            tmpDataset.push({
-                label: "nb normaux",
-            })
+        let dataset = []
+        for (i = 0; i < this.#data.length; i++) {
+            let current = this.#data[i]
+            tmpDataset.push(
+                {
+                    label: current.normal.titre,
+                    data: current.normal.freq,
+                    fill: false,
+                    borderColor: current.normal.color,
+                    tension: 0.1,
+                    backgroundColor: "#bfbfbf"
+                },
+                {
+                    label
+                }
+            )
             
         }
         let datasets = []
@@ -147,14 +192,13 @@ class LotoAnalyser{
      * @param {*} color couleur hexa ou acronyme a changer
      */
     setColor(index, color){
-        
+        this.#data[index]
     }
 
 
     debugg(){
-        console.log(
-            (this.#crudeData[1][1]+"").split(";")+"<br>"+(this.#crudeData[1][0]+"").split(";")
-            //(this.#crudeData[0][2][0]+"").split(";")
-        )
+        // console.log(    (this.#crudeData[1][1]+"").split(";")   )
+        console.log(    this.#crudeData[1][1][0])//(this.#crudeData[1][2]+"").split(";")   )
+        console.log(    this.#crudeData[1][2][0])//(this.#crudeData[1][2]+"").split(";")   )
     }
 }
