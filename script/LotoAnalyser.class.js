@@ -122,66 +122,41 @@ class LotoAnalyser{
     /**
      * renvoie une configuration pour un rendu Chart.js
      */
-    get renderConf(){
-
-        // datasets: [{
-        //     label: 'normal',
-        //     data: [65, 45, 35, 34, null, 4],
-        //     fill: false,
-        //     borderColor: 'rgb(75, 192, 192)',
-        //     tension: 0.1,
-        //     backgroundColor: "grey"                
-        // },
-
-
+    get Config(){
         const titlePatternStart = "freq de "
-        let loterylabels = arrayRange(1,49,1)
+        let datasFinal = []        
+        let loterylabels = arrayRange(1,59,1)
         for (let i = 0; i < loterylabels.length; i++) {
-            loterylabels[i] = titlePatternStart+loterylabels[i]
-        }        
-        let dataset = []
+            let elem = titlePatternStart+loterylabels[i]
+            if(i>49)
+                elem+=" chance"
+            loterylabels[i] = elem 
+        }
         for (i = 0; i < this.#data.length; i++) {
-            let current = this.#data[i]
-            tmpDataset.push(
+            datasFinal.push(
                 {
-                    label: current.normal.titre,
-                    data: current.normal.freq,
+                    label: this.#data[i].normal.titre,
+                    data: this.#data[i].normal.freq,
                     fill: false,
-                    borderColor: current.normal.color,
+                    borderColor: this.#data[i].normal.color,
                     tension: 0.1,
                     backgroundColor: "#bfbfbf"
                 },
                 {
-                    label
+                    label: this.#data[i].chance.title,
+                    data: this.#data[i].chance.freq,
+                    fill: false,
+                    borderColor: this.#data[i].chance.color,
+                    tension: 0.1,
+                    backgroundColor: "#bfbfbf"                    
                 }
             )
-            
         }
-        let datasets = []
-        // remplire le dataset avec les frequenceetc.. faire 2 dataset 
-        // pour chaque crudeData (1 freq normal et un freq chances)
         return {
             type: 'line',
             data: {
                 labels: loterylabels,
-                datasets: [{
-                        label: '1er dataset',
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1,
-                        borderColor: "#cb41b9",
-                        backgroundColor: "grey"                
-                    },
-                    {   label: '2e dataset',
-                        data: [10, 23, 32, 43, 1, 4, 6],
-                        fill: "auto",
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1,
-                        borderColor: "#414acb",
-                        backgroundColor: "grey"
-                    }
-                ]
+                datasets: datasFinal
             }
         }
     }
@@ -192,7 +167,7 @@ class LotoAnalyser{
      * @param {*} color couleur hexa ou acronyme a changer
      */
     setColor(index, color){
-        this.#data[index]
+        this.#data[index]=color
     }
 
 

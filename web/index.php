@@ -59,7 +59,7 @@
         "grand dec2019-dec2023",
         "#33ff33"
     )
-    console.log(crudeData)    
+  
     analyse.debugg()
     const ctx = document.getElementById("vizualgraph")
     ////////////////////////////////////////////////////
