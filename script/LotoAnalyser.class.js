@@ -1,12 +1,12 @@
 // creates [1,2,3,4] by example (arrayrange(1,4,1))
 arrayRange=(a,b,c) => Array.from({length:(b-a)/c+1},(d,e)=>a+e*c)  
-zfill = (str,n)=>str.length < n ? str+("0".repeat(str.length-n)) : str
+zfill = (str,n)=> typeof(str) === "string" ? str.length < n ? str+("0".repeat(n-str.length)) : str : new Error(`(${str}) is not string`)
 
 function darkener(colorHex){
 	let res = "#"
-	let tmp = colorHex.substr(1) // remove '#'
+	const tmp = colorHex.substr(1) // remove '#'
     for (let i=0;i<3;i++)
-    	res += Math.round(parseInt("0x"+tmp.substr(i*2,2))*0.9).toString(16)
+    	res += zfill(Math.round(parseInt("0x"+tmp.substr(i*2,2))*0.9).toString(16),2)
     return res
 }
 
@@ -74,14 +74,15 @@ class LotoAnalyser{
 
     /**
      * renvoie une liste de fréquences pour les 49 chiffres
-     * calcule les frequences pour toutes les données brutes d'entrée
+     * calcule les frequences pour toutes les tirages normaux et "numero chance"
+     * - a utiliser 1 fois a la fin de tous les enregistrements
      */
     get #frequency(){
         const entete = this.#crudeData[0][0][0]
         for (let nbData=0;nbData<this.#items;nbData++ ){
             // si entête correcte
             //(this.#crudeData[0][2][0]+"").split(";")[5]
-            if(entete[4] == "boule_1" && entete[9] == "numero_chance"){
+            if(entete[4] === "boule_1" && entete[9] === "numero_chance"){
                 for (let i = 0; i < this.#data[nbData].nbtirages ; i++) {
                     for (let j = 5; j < 12;j++) {
                         (this.#crudeData[0][1][0]+"").split(";")
@@ -152,8 +153,8 @@ class LotoAnalyser{
 
     debugg(){
         console.log(
-            (this.#crudeData[0][2][0]+"").split(";")[9]
-            
+            (this.#crudeData[1][1]+"").split(";")+"<br>"+(this.#crudeData[1][0]+"").split(";")
+            //(this.#crudeData[0][2][0]+"").split(";")
         )
     }
 }
