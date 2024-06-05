@@ -56,7 +56,7 @@ class LotoAnalyser{
             tmpFreqC.push(null)
         }
         // remplissage du vide pour la supperposition
-        for (var i = 1; i < 11; i++){ 
+        for (; i < 60; i++){ 
             tpmFreq.push(null)
             tmpFreqC.push(0) 
         }        
@@ -66,11 +66,13 @@ class LotoAnalyser{
         this.#crudeData[this.#items].pop() // dernière ligne inutile
         this.#data.push(
             {
+                // 1,2,3,etc...49,null,null,etc (10x)
                 normal: {
                     titre: title,
                     freq: tpmFreq,
                     color: color
                 },
+                // nul,null,null,etc...,1,2,3,4,etc...10
                 chance: {
                     titre: title+"(n°chance)",
                     freq: tmpFreqC,
@@ -87,21 +89,21 @@ class LotoAnalyser{
      * des 6 numéros tirés a chaque jours (par jeux de données)
      * en plus du numéro chance valant entre 1 et 9 (inclus)
      */
-    get #frequency(){
+    #frequency(){
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
-            let entete = this.#crudeData[this.#items][0][0]
-            // si entête correcte
-            if(entete[4] === "boule_1" && entete[9] === "numero_chance"){ 
-                for (let day = 0; day < this.#data[nbData].nbtirages ; day++) {
-                    for (let num = 4; num < 8;num++) {
+            let headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
+            if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
+                for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
+                    for (var num = 4; num < 8;num++) {
                         if(this.#sort) // freq mode
-                            this.#data[nbData].normal.freq[this.#crudeData[nbData][day][num]]++
+                            this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])]++
                     }
                     if(this.#sort)
-                        this.#data[nbData].chance.freq[this.#crudeData[nbData][day][num]]++
+                        //(this.#crudeData[0][1][0]+"").split(";")
+                        this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])+49]++
                 }                   
             } else {
-                throw new Error("entête de fichier incorrect: "+ entete)
+                throw new Error("entête de fichier incorrect: "+ headtop)
             }
         }
     }
@@ -122,15 +124,17 @@ class LotoAnalyser{
     /**
      * renvoie une configuration pour un rendu Chart.js
      */
-    get Config(){
-        const titlePatternStart = "freq de "
-        let datasFinal = []        
-        let loterylabels = arrayRange(1,59,1)
-        for (let i = 0; i < loterylabels.length; i++) {
-            let elem = titlePatternStart+loterylabels[i]
+    get config(){
+        this.#frequency()
+        let datasFinal = []   
+        let loterylabels = []     
+        for (var i = 1; i < 60; i++) {
+            let elem = "freq"
             if(i>49)
-                elem+=" chance"
-            loterylabels[i] = elem 
+                elem+=" chance de "+(i-49)
+            else
+                elem+=" de "+i
+            loterylabels.push(elem)
         }
         for (i = 0; i < this.#data.length; i++) {
             datasFinal.push(
@@ -143,7 +147,7 @@ class LotoAnalyser{
                     backgroundColor: "#bfbfbf"
                 },
                 {
-                    label: this.#data[i].chance.title,
+                    label: this.#data[i].chance.titre,
                     data: this.#data[i].chance.freq,
                     fill: false,
                     borderColor: this.#data[i].chance.color,
@@ -170,10 +174,10 @@ class LotoAnalyser{
         this.#data[index]=color
     }
 
-
-    debugg(){
-        // console.log(    (this.#crudeData[1][1]+"").split(";")   )
-        console.log(    this.#crudeData[1][1][0])//(this.#crudeData[1][2]+"").split(";")   )
-        console.log(    this.#crudeData[1][2][0])//(this.#crudeData[1][2]+"").split(";")   )
+    debug(){
+        console.log(this.#crudeData)
+        console.log((this.#crudeData[0][1][0]+"").split(";"))
+        console.log((this.#crudeData[1][2][0]+"").split(";"))
     }
+
 }

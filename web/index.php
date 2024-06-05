@@ -35,6 +35,7 @@
 
 <script type="text/javascript"> 
     let crudeData = JSON.parse(<?php 
+            // simplifie la méthode pour passer du csv vers le json (trés pénible en js)
             $csvFileContent= file_get_contents('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
             $csvLineArray = explode("\n", $csvFileContent);
             $result = array_map("str_getcsv", $csvLineArray);
@@ -44,8 +45,8 @@
     // traitement des données
     let analyse = new LotoAnalyser(
         crudeData,
-        "grand noel dec2017-dec2018",
-        "#3333ff"
+        "grand dec2017-dec2018",
+        "#5555ff"
     );
     crudeData = JSON.parse(<?php 
             $csvFileContent= file_get_contents('../donnees/grand_loto/2 grand_dec2019-dec2023.csv');
@@ -57,40 +58,39 @@
     analyse.addData(
         crudeData,
         "grand dec2019-dec2023",
-        "#33ff33"
+        "#7777ff"
     )
-  
-    analyse.debugg()
+    analyse.debug()
     const ctx = document.getElementById("vizualgraph")
     ////////////////////////////////////////////////////
-    const labels = [1,2,3,4,5,6,7]
-    const data = {
-        labels: labels,
-        datasets: [{
-                label: 'normal',
-                data: [65, 45, 35, 34, null, 4],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
-                borderColor: "#cb41b9",
-                backgroundColor: "grey"                
-            },
-            {   label: 'chance',
-                data: [null, null, null,89, 32],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
-                borderColor: "#414acb",
-                backgroundColor: "grey"
-            }
-        ]
-    };
-    const config = {
-        type: 'line',
-        data: data
-    };
+    // const labels = [1,2,3,4,5,6,7]
+    // const data = {
+    //     labels: labels,
+    //     datasets: [{
+    //             label: 'normal',
+    //             data: [65, 45, 35, 34, null, 4],
+    //             fill: false,
+    //             borderColor: 'rgb(75, 192, 192)',
+    //             tension: 0.1,
+    //             borderColor: "#cb41b9",
+    //             backgroundColor: "grey"                
+    //         },
+    //         {   label: 'chance',
+    //             data: [null, null, null,89, 32],
+    //             fill: false,
+    //             borderColor: 'rgb(75, 192, 192)',
+    //             tension: 0.1,
+    //             borderColor: "#414acb",
+    //             backgroundColor: "grey"
+    //         }
+    //     ]
+    // };
+    // const config = {
+    //     type: 'line',
+    //     data: data
+    // };
     ////////////////////////////////////////////////////
-    const chart = new Chart(ctx, config)
+    const chart = new Chart(ctx, analyse.config)
 
 </script>    
 </html>
