@@ -99,7 +99,7 @@ class LotoAnalyser{
                             this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])]++
                     }
                     if(this.#sort)
-                        //(this.#crudeData[0][1][0]+"").split(";")
+                        //(this.#crudeData[0][1][0]+"").split(";") 
                         this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])+49]++
                 }                   
             } else {
