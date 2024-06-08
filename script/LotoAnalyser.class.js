@@ -91,7 +91,7 @@ class LotoAnalyser{
      */
     #frequency(){
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
-            let headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
+            const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
             if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
                 for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
                     for (var num = 4; num < 8;num++) {
@@ -99,7 +99,6 @@ class LotoAnalyser{
                             this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])]++
                     }
                     if(this.#sort)
-                        //(this.#crudeData[0][1][0]+"").split(";") 
                         this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])+49]++
                 }                   
             } else {
@@ -175,9 +174,12 @@ class LotoAnalyser{
     }
 
     debug(){
+        this.#data[0].normal.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])]++
         console.log(this.#crudeData)
         console.log((this.#crudeData[0][1][0]+"").split(";"))
         console.log((this.#crudeData[1][2][0]+"").split(";"))
+        console.log(this.#data[0].normal.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])])
+        //console.log(this.#data[0].chance.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])+49])
     }
 
 }
