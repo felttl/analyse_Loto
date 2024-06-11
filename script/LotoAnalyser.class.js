@@ -93,13 +93,19 @@ class LotoAnalyser{
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
             const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
             if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
+                let a = (this.#crudeData[1]).split(";")
+                console.log(`nb tirage : `+a)
                 for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
+                    console.log("hey !!!")
                     for (var num = 4; num < 8;num++) {
+                        
                         if(this.#sort) // freq mode
-                            this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])]++
+                            this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";"))[num]]++
                     }
                     if(this.#sort)
-                        this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";")[num])+49]++
+                        this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";"))[num]+49]++
+                    
+                    console.log(`nbdata = ${nbData}, day= ${day}, num=${num}, crudebloc=${parseInt((this.#crudeData[nbData][day][0]+'').split(";"))+49}`)
                 }                   
             } else {
                 throw new Error("entête de fichier incorrect: "+ headtop)
