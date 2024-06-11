@@ -174,12 +174,7 @@ class LotoAnalyser{
     }
 
     debug(){
-        this.#data[0].normal.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])]++
-        console.log(this.#crudeData)
-        console.log((this.#crudeData[0][1][0]+"").split(";"))
-        console.log((this.#crudeData[1][2][0]+"").split(";"))
-        console.log(this.#data[0].normal.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])])
-        //console.log(this.#data[0].chance.freq[parseInt((this.#crudeData[0][1][0]+"").split(";")[4])+49])
+        console.log(this.#data)
     }
 
 }
