@@ -93,7 +93,7 @@ class LotoAnalyser{
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
             const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
             if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
-                let a = (this.#crudeData[1]).split(";")
+                let a = (this.#crudeData[1]+"").split(";")
                 console.log(`nb tirage : `+a)
                 for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
                     console.log("hey !!!")
@@ -180,7 +180,7 @@ class LotoAnalyser{
     }
 
     debug(){
-        console.log(this.#data)
+        console.log(this.#crudeData)
     }
 
 }
