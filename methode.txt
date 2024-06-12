@@ -1,0 +1,2 @@
+découper les données : structurer les données de la bonne manière pour les frequences (lever la structure "string" et passer en json le contenu entier)
+- supprimer le php dans la page et passer le tout en json (formatté avec une fonction maison, car sur le web c'est trés compliqué a utiliser)
