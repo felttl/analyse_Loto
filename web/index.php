@@ -62,6 +62,23 @@
     )
     analyse.debug()
     const ctx = document.getElementById("vizualgraph")
+    console.log("yeap")
+    // test de lecture avec fetch()
+
+    function readf(filepath){
+        fetch(filepath)
+            .then(res => res.text())
+            .then(data => {
+                console.log(data)
+            })     
+        return fetch   
+    }
+
+
+    
+    console.log("res :                              . "+readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')+"")
+
+
     ////////////////////////////////////////////////////
     // const labels = [1,2,3,4,5,6,7]
     // const data = {
