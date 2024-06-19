@@ -2,6 +2,7 @@
 arrayRange=(a,b,c) => Array.from({length:(b-a)/c+1},(d,e)=>a+e*c)  
 zfill = (str,n)=> typeof(str) === "string" ? str.length < n ? str+("0".repeat(n-str.length)) : str : new Error(`(${str}) is not string`)
 
+// assombri une couleur
 function darkener(colorHex){
 	let res = "#"
 	const tmp = colorHex.substr(1) // remove '#'
@@ -10,6 +11,7 @@ function darkener(colorHex){
     return res
 }
 
+// donne une répartition de couleur selon les 400nm de longueur d'onde visible avec n divisions/nb de couleurs
 function getColorParts(partsNb){
     let res = []    
     if(partsNb > 0){
@@ -51,11 +53,11 @@ class LotoAnalyser{
         // initialisation des frequences
         let tpmFreq = []
         let tmpFreqC = []
+        // remplissage du vide pour la supperposition        
         for (var i = 1; i < 50; i++){
             tpmFreq.push(0)
             tmpFreqC.push(null)
         }
-        // remplissage du vide pour la supperposition
         for (; i < 60; i++){ 
             tpmFreq.push(null)
             tmpFreqC.push(0) 
