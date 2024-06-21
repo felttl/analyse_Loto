@@ -1,2 +1,13 @@
 découper les données : structurer les données de la bonne manière pour les frequences (lever la structure "string" et passer en json le contenu entier)
 - supprimer le php dans la page et passer le tout en json (formatté avec une fonction maison, car sur le web c'est trés compliqué a utiliser)
+
+
+- 1 verifier que c'est possible d'nevoyer une requete de type fichier depuis js sans utiliser de serveur (pour le coté portable)
+- 2 formater le fichichier d'entrée (texte) pour ensuite le parser en json (avec les règles regex si necessaire)
+- 3 perser en json (objet utilisable)
+- 4 re-tester la méthode pour verifier que toue est bonne
+- 5 si necesaire fusionner les types de graphiques en un seul avec un méthode supplémentaire (ou autre technique(s))
+- 6 constater la progression/fin du projet
+- 7 ajouter des chiffres clefs
+- 8 ajouter des données et autres informations utiles a traiter
+- 9 faire pareil pour l'EuroMillion
