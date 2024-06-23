@@ -54,29 +54,49 @@
             $result = array_map("str_getcsv", $csvLineArray);
             echo "'".json_encode($result)."'";
         ?>        
-    );
+    )
     analyse.addData(
         crudeData,
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    analyse.debug()
+    //analyse.debug()
     const ctx = document.getElementById("vizualgraph")
-    console.log("yeap")
+
     // test de lecture avec fetch()
 
-    function readf(filepath){
+    function readfXHR(filepath){
         fetch(filepath)
             .then(res => res.text())
             .then(data => {
-                return data
+                return data.text()
             })     
         return fetch   
     }
 
+    async function readfSOFP(filepath){
+        const pickerOpts = {
+            types: [
+                {
+                    description: "Text",
+                    accept: {
+                        "*.csv": [".png", ".gif", ".jpeg", ".jpg"],
+                    },
+                },
+            ],
+            excludeAcceptAllOption: true,
+            multiple: false,
+        };
+        const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
+        const fileData = await fileHandle.getFile()
+        const text = await fileData.text()
+        return text
+    }
 
-    
-    console.log("res :                              . "+readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')+"")
+
+    console.log("yeap") 
+    //readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
+    readfSOFP('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
 
 
     ////////////////////////////////////////////////////
