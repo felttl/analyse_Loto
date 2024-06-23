@@ -4,9 +4,6 @@
 [source des données](https://www.fdj.fr/jeux-de-tirage/loto/historique)
 
 ### npm requirements :
-- reading files with fs tool
-```bash
-npm i fs-extra 
-```
+- none (updated)
 
 <!-- end page -->
