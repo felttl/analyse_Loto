@@ -74,24 +74,6 @@
         return fetch   
     }
 
-    async function readfSOFP(filepath){
-        const pickerOpts = {
-            types: [
-                {
-                    description: "Text",
-                    accept: {
-                        "*.csv": [".png", ".gif", ".jpeg", ".jpg"],
-                    },
-                },
-            ],
-            excludeAcceptAllOption: true,
-            multiple: false,
-        };
-        const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
-        const fileData = await fileHandle.getFile()
-        const text = await fileData.text()
-        return text
-    }
 
 
     console.log("yeap") 
