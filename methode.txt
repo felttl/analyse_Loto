@@ -11,3 +11,14 @@ découper les données : structurer les données de la bonne manière pour les f
 - 7 ajouter des chiffres clefs
 - 8 ajouter des données et autres informations utiles a traiter
 - 9 faire pareil pour l'EuroMillion
+
+
+informations utiles : 
+
+tris possibles : 
+
+    - numéro les plus sortis 
+    - numéro qui const les plus scuceptibles de sortir (contraire des fréquences les plus élevées)
+        car il se peut qu'a force de les tirer les chiffres apparaissent moins en terme de proba (ce qui est logique)
+    - numéros sortis en dernier/premier
+    
