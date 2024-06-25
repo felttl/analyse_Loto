@@ -96,11 +96,10 @@ class LotoAnalyser{
             const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
             if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
                 let a = (this.#crudeData[1]+"").split(";")
-                console.log(`nb tirage : `+a)
+                //console.log(`nb tirage : `+a)
                 for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
-                    console.log("hey !!!")
+                    //console.log("hey !!!")
                     for (var num = 4; num < 8;num++) {
-                        
                         if(this.#sort) // freq mode
                             this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";"))[num]]++
                     }
@@ -113,6 +112,16 @@ class LotoAnalyser{
                 throw new Error("entête de fichier incorrect: "+ headtop)
             }
         }
+    }
+
+    /**
+     * fusionne les fréquences de plusieurs set de données déja ajoutés dans un nouveau ou déja existant
+     * @param {Array} allToMerge 2 elements minimum (existing ones)
+     * @param {int|null} toFinal merge all to existing one or if null creating a new one
+     */
+    merge(allToMerge, toFinal){
+        if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
+        if(typeof(toFinal) !== "int" | typeof(toFinal) !== "null") throw new Error(`${toFinal} must be int or null !`);
     }
 
     /**
