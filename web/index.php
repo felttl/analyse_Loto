@@ -75,11 +75,13 @@
     }
 
 
-
     console.log("yeap") 
+    fetch('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
+        .then(r=>r.text())
+        .then(text => {
+            lines = text.split("\n")
+        })
     //readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
-    readfSOFP('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
-
 
     ////////////////////////////////////////////////////
     // const labels = [1,2,3,4,5,6,7]
