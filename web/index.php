@@ -60,27 +60,27 @@
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    //analyse.debug()
+    analyse.debug()
     const ctx = document.getElementById("vizualgraph")
 
-    // test de lecture avec fetch()
+    // tests de lecture /////////////////////
 
-    function readfXHR(filepath){
-        fetch(filepath)
-            .then(res => res.text())
-            .then(data => {
-                return data.text()
-            })     
-        return fetch   
-    }
+    // function readfXHR(filepath){
+    //     fetch(filepath)
+    //         .then(res => res.text())
+    //         .then(data => {
+    //             return data.text()
+    //         })     
+    //     return fetch   
+    // }
 
 
-    console.log("yeap") 
-    fetch('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
-        .then(r=>r.text())
-        .then(text => {
-            lines = text.split("\n")
-        })
+    // console.log("yeap") 
+    // fetch('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
+    //     .then(r=>r.text())
+    //     .then(text => {
+    //         lines = text.split("\n")
+    //     })
     //readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
 
     ////////////////////////////////////////////////////

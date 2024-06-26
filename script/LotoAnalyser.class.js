@@ -90,6 +90,10 @@ class LotoAnalyser{
      * calcule toutes les fréquences d'apparition des numéros de 1 a 49 (inclus)
      * des 6 numéros tirés a chaque jours (par jeux de données)
      * en plus du numéro chance valant entre 1 et 9 (inclus)
+     * #fonctionnalité supplémentaire :
+     *  - OK trier par fréquence
+     *  - trier par date
+     *  - trier par jours (fréquences des tirages sortis du plus élevé au moins élevés (donc de 6 numero et du numero chance sortis))
      */
     #frequency(){
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
@@ -116,12 +120,25 @@ class LotoAnalyser{
 
     /**
      * fusionne les fréquences de plusieurs set de données déja ajoutés dans un nouveau ou déja existant
-     * @param {Array} allToMerge 2 elements minimum (existing ones)
+     * @param {Array} allToMerge 2 elements minimum (liste d'entiers des position des données 
+     * dans le calcule des fréquences effectués par la classe, exemple : [1,4] prend la donné a la position 1 et 4, 2 éléments minimum dans la liste)
+     * on peut metttre plusieurs foir la même nombre pour "dupliquer" les fréquences ou les "doubler"
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
         if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
-        if(typeof(toFinal) !== "int" | typeof(toFinal) !== "null") throw new Error(`${toFinal} must be int or null !`);
+        if(typeof(toFinal) !== "int" | toFinal !== null) throw new Error(`${toFinal} must be int or null !`);
+        if(this.dataNumber <= 1) throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
+        // verifie que les indexes sont correctes
+        for (let i = 0; i < allToMerge.length; i++) {
+            if(allToMerge[i] < 0) throw new Error(`value not in range : allToMerge[${i}]<0||allToMerge[${i}]>${this.dataNumber}`)
+            else if (allToMerge[i] >= this.dataNumber) throw new Error(`value out of range (${this.dataNumber})`)
+        }
+        if(toFinal < 0) throw new Error(`toFinal out of range (${toFinal}<0)`)
+        // merge des frequences
+        for (i = 0; i <allToMerge.length; i++) {
+            
+        }
     }
 
     /**
@@ -192,6 +209,11 @@ class LotoAnalyser{
 
     debug(){
         console.log(this.#crudeData)
+    }
+
+    // renvoie le nomre de blocs de données pour calculer une courbe en fonction de chaque éléments
+    get dataNumber(){
+        return this.#data.length
     }
 
 }
