@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>analyse Loto</title>
     <!-- our tooling -->
-    <script src="../script/LotoAnalyser.class.js">
-    </script>    
+    <script src="../scripts/js/LotoAnalyser.class.js"></script>    
     <!-- css rules -->
     <link type="text/css" rel="stylesheet" href="style.css">    
     <!-- external module(s) importing -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php
+    // importation des outils supplémentaires
+    include_once "../scripts/php/fileManager/fileManager.php"
+
+    ?>
 </head>
 
 <body>
@@ -25,10 +29,6 @@
         </section>    
         <section id="sLoto">
             <h3>debugg zone</h3>
-            <div id="debug">
-                <!-- eaziest way to convert csv to json  -->
-
-            </div>
         </section>        
     </main>
 </body>
@@ -63,6 +63,10 @@
     analyse.debug()
     const ctx = document.getElementById("vizualgraph")
 
+    console.log(<?php
+            echo csv2json('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
+        ;?>
+    )
     // tests de lecture /////////////////////
 
     // function readfXHR(filepath){
