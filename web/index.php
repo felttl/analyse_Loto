@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <?php
     // importation des outils supplémentaires
-    include_once "../scripts/php/fileManager/fileManager.php"
+    include_once "../scripts/php/fileManager/fileManager.php";
 
     ?>
 </head>
@@ -29,17 +29,21 @@
         </section>    
         <section id="sLoto">
             <h3>debugg zone</h3>
+            <?php
+            // zone de tests temporaire
+            echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
+
+
+
+            ?>
         </section>        
     </main>
 </body>
 
 <script type="text/javascript"> 
-    let crudeData = JSON.parse(<?php 
-            // simplifie la méthode pour passer du csv vers le json (trés pénible en js)
-            $csvFileContent= file_get_contents('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
-            $csvLineArray = explode("\n", $csvFileContent);
-            $result = array_map("str_getcsv", $csvLineArray);
-            echo "'".json_encode($result)."'";
+    let crudeData = JSON.parse(<?php // attention ! toutes les données se retrouyveront dans le script js et le code de la page html
+            // simplifie la méthode pour passer du csv vers le json (trés pénible/impossible en js)
+            echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
         ?>        
     );
     // traitement des données
@@ -49,10 +53,7 @@
         "#5555ff"
     );
     crudeData = JSON.parse(<?php 
-            $csvFileContent= file_get_contents('../donnees/grand_loto/2 grand_dec2019-dec2023.csv');
-            $csvLineArray = explode("\n", $csvFileContent);
-            $result = array_map("str_getcsv", $csvLineArray);
-            echo "'".json_encode($result)."'";
+            echo csv2Json('../donnees/grand_loto/2 grand_dec2019-dec2023.csv');
         ?>        
     )
     analyse.addData(
@@ -60,7 +61,7 @@
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    analyse.debug()
+    //analyse.debug()
     const ctx = document.getElementById("vizualgraph")
 
     console.log(<?php
