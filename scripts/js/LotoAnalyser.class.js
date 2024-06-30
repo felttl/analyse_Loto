@@ -90,6 +90,10 @@ class LotoAnalyser{
      * calcule toutes les fréquences d'apparition des numéros de 1 a 49 (inclus)
      * des 6 numéros tirés a chaque jours (par jeux de données)
      * en plus du numéro chance valant entre 1 et 9 (inclus)
+     * #fonctionnalité supplémentaire :
+     *  - OK trier par fréquence
+     *  - trier par date
+     *  - trier par jours (fréquences des tirages sortis du plus élevé au moins élevés (donc de 6 numero et du numero chance sortis))
      */
     #frequency(){
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
@@ -116,12 +120,95 @@ class LotoAnalyser{
 
     /**
      * fusionne les fréquences de plusieurs set de données déja ajoutés dans un nouveau ou déja existant
-     * @param {Array} allToMerge 2 elements minimum (existing ones)
+     * @param {Array} allToMerge 2 elements minimum (liste d'entiers des position des données 
+     * dans le calcule des fréquences effectués par la classe, exemple : [1,4] prend la donné a la position 1 et 4, 2 éléments minimum dans la liste)
+     * on peut metttre plusieurs foir la même nombre pour "dupliquer" les fréquences ou les "doubler"
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
+<<<<<<< HEAD:script/LotoAnalyser.class.js
+        if(allToMerge.length < 2) 
+            throw new Error(`${allToMerge} lenght < 2 !`)
+        if(typeof(toFinal) !== "int" && toFinal !== "null") 
+            throw new Error(`${toFinal} must be int or null !`)
+        // setup
+        let tpmFreq = []
+        let tmpFreqC = []
+        for (var i = 1; i < 50; i++){
+            tpmFreq.push(0)
+            tmpFreqC.push(null)
+        }
+        for (; i < 60; i++){ 
+            tpmFreq.push(null)
+            tmpFreqC.push(0) 
+        }  
+        // @WARNING !!!!!
+        // pour le nb de tirages de l'objet suivant il faut faire la somme des nb de tirages des indexes présents
+        // dans la liste prise en paramètre "allToMerge" !!!!
+        let finalElem = {
+            normal: {
+                titre: toFinal !== null ? this.#data[toFinal].normal.title : "no title set",
+                freq: tpmFreq,
+                color: toFinal !== null ? this.#data[toFinal].normal.color : "#222222"
+            },
+            // nul,null,null,etc...,1,2,3,4,etc...10
+            chance: {
+                titre: toFinal !== null ? this.#data[toFinal].chance.title : "no chance title set",
+                freq: tmpFreqC,
+                color: darkener(toFinal !== null ? this.#data[toFinal].chance.color : "#222222")
+            },
+            nbtirages: this.#crudeData[toFinal !== null ? toFinal : this.#crudeData.length-1][0].length
+        }
+        // pour tous les éléments a fusionner vers la destination
+        for (let k = 0; k < allToMerge.length; k++) {
+            // pour chaque bloc de données
+            for (let i = 0; i < this.#data[k].normal.freq.length; i++) {
+                if(this.#data[k].normal.freq[i] !== null)
+                    finalElem.normal.freq[i]+=this.#data[k].normal.freq[i]
+            }    
+            for (;i<i+this.#data[k].chance.freq.length;i++) {
+                if(this.#data[i].chance.freq[i] !== null)
+                    finalElem.chance.freq[i]+=this.#data[k].chance.freq[i]
+            }                     
+        }
+        // placement des données
+        if(toFinal == null){
+            this.#data.push(finalElem)
+        } else {
+            for (let i=0; i<this.#data[toFinal].normal.freq.length; i++) {
+                if(finalElem.normal.freq[i] !== null)
+                    this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
+            }               
+            for (;i<i+this.#data[toFinal].chance.freq.length;i++) {
+                if(finalElem.chance.freq[i] !== null)
+                    this.#data[toFinal].chance.freq[toFinal]+=finalElem.chance.freq[i]
+            }               
+        }
+        //@WARNING a faire (★★☆☆☆ pas tres important)
+        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
+        this.#reorder()
+        
+    }
+
+    #reorder(){
+        //@WARNING a faire (★★☆☆☆ pas tres important)
+        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
+        // a faire
+=======
         if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
-        if(typeof(toFinal) !== "int" | typeof(toFinal) !== "null") throw new Error(`${toFinal} must be int or null !`);
+        if(typeof(toFinal) !== "int" | toFinal !== null) throw new Error(`${toFinal} must be int or null !`);
+        if(this.dataNumber <= 1) throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
+        // verifie que les indexes sont correctes
+        for (let i = 0; i < allToMerge.length; i++) {
+            if(allToMerge[i] < 0) throw new Error(`value not in range : allToMerge[${i}]<0||allToMerge[${i}]>${this.dataNumber}`)
+            else if (allToMerge[i] >= this.dataNumber) throw new Error(`value out of range (${this.dataNumber})`)
+        }
+        if(toFinal < 0) throw new Error(`toFinal out of range (${toFinal}<0)`)
+        // merge des frequences
+        for (i = 0; i <allToMerge.length; i++) {
+            
+        }
+>>>>>>> e91dd8f68d03a09fd68f725aa86f0f74899ba335:scripts/js/LotoAnalyser.class.js
     }
 
     /**
@@ -192,6 +279,11 @@ class LotoAnalyser{
 
     debug(){
         console.log(this.#crudeData)
+    }
+
+    // renvoie le nomre de blocs de données pour calculer une courbe en fonction de chaque éléments
+    get dataNumber(){
+        return this.#data.length
     }
 
 }
