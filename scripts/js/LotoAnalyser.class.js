@@ -120,73 +120,8 @@ class LotoAnalyser{
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
-        if(allToMerge.length < 2) 
-            throw new Error(`${allToMerge} lenght < 2 !`)
-        if(typeof(toFinal) !== "int" && toFinal !== "null") 
-            throw new Error(`${toFinal} must be int or null !`)
-        // setup
-        let tpmFreq = []
-        let tmpFreqC = []
-        for (var i = 1; i < 50; i++){
-            tpmFreq.push(0)
-            tmpFreqC.push(null)
-        }
-        for (; i < 60; i++){ 
-            tpmFreq.push(null)
-            tmpFreqC.push(0) 
-        }  
-        // @WARNING !!!!!
-        // pour le nb de tirages de l'objet suivant il faut faire la somme des nb de tirages des indexes présents
-        // dans la liste prise en paramètre "allToMerge" !!!!
-        let finalElem = {
-            normal: {
-                titre: toFinal !== null ? this.#data[toFinal].normal.title : "no title set",
-                freq: tpmFreq,
-                color: toFinal !== null ? this.#data[toFinal].normal.color : "#222222"
-            },
-            // nul,null,null,etc...,1,2,3,4,etc...10
-            chance: {
-                titre: toFinal !== null ? this.#data[toFinal].chance.title : "no chance title set",
-                freq: tmpFreqC,
-                color: darkener(toFinal !== null ? this.#data[toFinal].chance.color : "#222222")
-            },
-            nbtirages: this.#crudeData[toFinal !== null ? toFinal : this.#crudeData.length-1][0].length
-        }
-        // pour tous les éléments a fusionner vers la destination
-        for (let k = 0; k < allToMerge.length; k++) {
-            // pour chaque bloc de données
-            for (let i = 0; i < this.#data[k].normal.freq.length; i++) {
-                if(this.#data[k].normal.freq[i] !== null)
-                    finalElem.normal.freq[i]+=this.#data[k].normal.freq[i]
-            }    
-            for (;i<i+this.#data[k].chance.freq.length;i++) {
-                if(this.#data[i].chance.freq[i] !== null)
-                    finalElem.chance.freq[i]+=this.#data[k].chance.freq[i]
-            }                     
-        }
-        // placement des données
-        if(toFinal == null){
-            this.#data.push(finalElem)
-        } else {
-            for (let i=0; i<this.#data[toFinal].normal.freq.length; i++) {
-                if(finalElem.normal.freq[i] !== null)
-                    this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
-            }               
-            for (;i<i+this.#data[toFinal].chance.freq.length;i++) {
-                if(finalElem.chance.freq[i] !== null)
-                    this.#data[toFinal].chance.freq[toFinal]+=finalElem.chance.freq[i]
-            }               
-        }
-        //@WARNING a faire (★★☆☆☆ pas tres important)
-        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
-        this.#reorder()
-        
-    }
-
-    #reorder(){
-        //@WARNING a faire (★★☆☆☆ pas tres important)
-        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
-        // a faire
+        if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
+        if(typeof(toFinal) !== "int" | typeof(toFinal) !== "null") throw new Error(`${toFinal} must be int or null !`);
     }
 
     /**
