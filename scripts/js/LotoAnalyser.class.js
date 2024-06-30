@@ -206,7 +206,6 @@ class LotoAnalyser{
         for (i = 0; i <allToMerge.length; i++) {
             
         }
->>>>>>> e91dd8f68d03a09fd68f725aa86f0f74899ba335:scripts/js/LotoAnalyser.class.js
     }
 
     /**
