@@ -126,7 +126,6 @@ class LotoAnalyser{
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
-<<<<<<< HEAD:script/LotoAnalyser.class.js
         if(allToMerge.length < 2) 
             throw new Error(`${allToMerge} lenght < 2 !`)
         if(typeof(toFinal) !== "int" && toFinal !== "null") 
@@ -194,7 +193,6 @@ class LotoAnalyser{
         //@WARNING a faire (★★☆☆☆ pas tres important)
         // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
         // a faire
-=======
         if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
         if(typeof(toFinal) !== "int" | toFinal !== null) throw new Error(`${toFinal} must be int or null !`);
         if(this.dataNumber <= 1) throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
