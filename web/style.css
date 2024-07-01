@@ -124,6 +124,9 @@ h3{
 h4{
 	text-decoration: underline 10px rgb(50, 136, 44);  
 }
-
+/* limit text overflow x */
+#graph, #sLoto{
+  word-wrap: break-word;
+}
 
 /* end page */
