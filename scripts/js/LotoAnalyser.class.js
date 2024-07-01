@@ -94,6 +94,34 @@ class LotoAnalyser{
     }
 
     /**
+     * permet de calculer les fréquences d'un bloc a la fois 
+     * ,sans paramètre par défaut il fera le dernier élément des
+     * données brutes ajouté
+     * @param {*} idx index de l'élément sur lequel calculer les fréquences
+     */
+    #calcFrequency(idx=null){
+        if(idx >= this.#crudeData.length) 
+            throw new Error(`${idx}>${this.#crudeData.length} out of range`)
+        if(idx < 0)
+            throw new Error(`${idx}<0 out of range!`)
+        if(idx == 0 && this.#crudeData.length == 0)
+            throw new Error(`index=${idx} but no elements in list(must load data before)`)
+        const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable       
+        if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
+            throw new Error("entête de fichier incorrect: "+ headtop)
+        const pos = idx === null ? this.#crudeData.length-1 : idx
+        for (let day = 0; day < this.#data[pos].nbtirages; day++) {
+            for (let num = 4; num < 9; num++) {
+                let freqPos = parseInt((this.#crudeData[pos][day][0]+"").split(";"))
+                if(this.#sort)
+                    this.#data[pos].normal.freq[freqPos[num]]++
+            }
+            if(this.#sort)
+                this.#data[nbData].chance.freq[freqPos[num]+49]++            
+        }
+    }
+
+    /**
      * calcule toutes les fréquences d'apparition des numéros de 1 a 49 (inclus)
      * des 6 numéros tirés a chaque jours (par jeux de données)
      * en plus du numéro chance valant entre 1 et 9 (inclus)
@@ -102,26 +130,9 @@ class LotoAnalyser{
      *  - trier par date
      *  - trier par jours (fréquences des tirages sortis du plus élevé au moins élevés (donc de 6 numero et du numero chance sortis))
      */
-    #frequency(){
+    #allFrequency(){
         for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
-            const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable
-            if(headtop[4] === "boule_1" && headtop[9] === "numero_chance"){ 
-                let a = (this.#crudeData[1]+"").split(";")
-                //console.log(`nb tirage : `+a)
-                for (let day = 1; day < this.#data[nbData].nbtirages ; day++) {
-                    //console.log("hey !!!")
-                    for (var num = 4; num < 8;num++) {
-                        if(this.#sort) // freq mode
-                            this.#data[nbData].normal.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";"))[num]]++
-                    }
-                    if(this.#sort)
-                        this.#data[nbData].chance.freq[parseInt((this.#crudeData[nbData][day][0]+"").split(";"))[num]+49]++
-                    
-                    console.log(`nbdata = ${nbData}, day= ${day}, num=${num}, crudebloc=${parseInt((this.#crudeData[nbData][day][0]+'').split(";"))+49}`)
-                }                   
-            } else {
-                throw new Error("entête de fichier incorrect: "+ headtop)
-            }
+            this.#calcFrequency(nbData)
         }
     }
 
@@ -151,7 +162,10 @@ class LotoAnalyser{
                 this.#data[toFinal].normal.title,
                 this.#data[toFinal].normal.color
             )    
-            finalElem.nbtirages = this.#crudeData[toFinal][0].length        
+            // a calculer
+            let allNbData = this.#crudeData[toFinal][0].length  
+            // a coder ici (voir le précédent warning)
+            finalElem.nbtirages = allNbData
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
@@ -220,7 +234,7 @@ class LotoAnalyser{
      * renvoie une configuration pour un rendu Chart.js
      */
     get config(){
-        this.#frequency()
+        this.#allFrequency()
         let datasFinal = []   
         let loterylabels = []     
         for (var i = 1; i < 60; i++) {
