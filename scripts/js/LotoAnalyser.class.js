@@ -50,6 +50,20 @@ class LotoAnalyser{
      * @param {*} title titre des données
      */
     addData(data,title,color){
+      
+        this.#crudeData.push(data)
+        // on transforme l'entête (str) en tableau (lisiblité)
+        this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
+        this.#crudeData[this.#items].pop() // dernière ligne inutile
+        // on rajoute un bloc de données utile(vide) avec la bonne structure (exploitable plus facilement)
+        let tmp = this.#getDataSetup(title,color)
+        tmp.nbtirages = this.#crudeData[this.#items][0].length
+        this.#data.push(tmp)
+        this.#items++   
+    }
+
+    // renvoie un setup vide
+    #getDataSetup(title,color){
         // initialisation des frequences
         let tpmFreq = []
         let tmpFreqC = []
@@ -61,13 +75,8 @@ class LotoAnalyser{
         for (; i < 60; i++){ 
             tpmFreq.push(null)
             tmpFreqC.push(0) 
-        }        
-        this.#crudeData.push(data)
-        // on transforme l'entête (str) en tableau (lisiblité)
-        this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
-        this.#crudeData[this.#items].pop() // dernière ligne inutile
-        this.#data.push(
-            {
+        }  
+        return {
                 // 1,2,3,etc...49,null,null,etc (10x)
                 normal: {
                     titre: title,
@@ -80,10 +89,8 @@ class LotoAnalyser{
                     freq: tmpFreqC,
                     color: darkener(color)
                 },
-                nbtirages: this.#crudeData[this.#items][0].length
-            }
-        )
-        this.#items++   
+                nbtirages: 0
+        }
     }
 
     /**
@@ -126,37 +133,25 @@ class LotoAnalyser{
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
-        if(allToMerge.length < 2) 
-            throw new Error(`${allToMerge} lenght < 2 !`)
+        const reuse = `allToMerge=${allToMerge}, tofinal=${toFinal}`
         if(typeof(toFinal) !== "int" && toFinal !== "null") 
-            throw new Error(`${toFinal} must be int or null !`)
-        // setup
-        let tpmFreq = []
-        let tmpFreqC = []
-        for (var i = 1; i < 50; i++){
-            tpmFreq.push(0)
-            tmpFreqC.push(null)
-        }
-        for (; i < 60; i++){ 
-            tpmFreq.push(null)
-            tmpFreqC.push(0) 
-        }  
+            throw new Error(`${toFinal} must be int or null !`)        
+        if(allToMerge.length < 2 && toFinal === null) 
+            throw new Error(`${reuse} 2 elements required for merge at least !`)
+        if(allToMerge.length < 1 && toFinal !== null)
+            throw new Error(`${reuse} 2 elements required for merge at least !`)            
         // @WARNING !!!!!
         // pour le nb de tirages de l'objet suivant il faut faire la somme des nb de tirages des indexes présents
         // dans la liste prise en paramètre "allToMerge" !!!!
-        let finalElem = {
-            normal: {
-                titre: toFinal !== null ? this.#data[toFinal].normal.title : "no title set",
-                freq: tpmFreq,
-                color: toFinal !== null ? this.#data[toFinal].normal.color : "#222222"
-            },
-            // nul,null,null,etc...,1,2,3,4,etc...10
-            chance: {
-                titre: toFinal !== null ? this.#data[toFinal].chance.title : "no chance title set",
-                freq: tmpFreqC,
-                color: darkener(toFinal !== null ? this.#data[toFinal].chance.color : "#222222")
-            },
-            nbtirages: this.#crudeData[toFinal !== null ? toFinal : this.#crudeData.length-1][0].length
+        if(toFinal === null){
+            let finalElem = this.#getDataSetup("no title set", "#222222")
+            finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
+        } else {
+            let finalElem = this.#getDataSetup(
+                this.#data[toFinal].normal.title,
+                this.#data[toFinal].normal.color
+            )    
+            finalElem.nbtirages = this.#crudeData[toFinal][0].length        
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
