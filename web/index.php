@@ -32,16 +32,14 @@
             <?php
             // zone de tests temporaire
             echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
-
-
-
             ?>
         </section>        
     </main>
 </body>
 
 <script type="text/javascript"> 
-    let crudeData = JSON.parse(<?php // attention ! toutes les données se retrouyveront dans le script js et le code de la page html
+    let crudeData = JSON.parse(<?php 
+            // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)
             // simplifie la méthode pour passer du csv vers le json (trés pénible/impossible en js)
             echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
         ?>        
