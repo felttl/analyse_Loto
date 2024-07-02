@@ -50,7 +50,6 @@ class LotoAnalyser{
      * @param {*} title titre des données
      */
     addData(data,title,color){
-      
         this.#crudeData.push(data)
         // on transforme l'entête (str) en tableau (lisiblité)
         this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
@@ -59,7 +58,8 @@ class LotoAnalyser{
         let tmp = this.#getDataSetup(title,color)
         tmp.nbtirages = this.#crudeData[this.#items][0].length
         this.#data.push(tmp)
-        this.#items++   
+        this.#calcFrequency(this.#items)
+        this.#items++  
     }
 
     // renvoie un setup vide
@@ -106,18 +106,20 @@ class LotoAnalyser{
             throw new Error(`${idx}<0 out of range!`)
         if(idx == 0 && this.#crudeData.length == 0)
             throw new Error(`index=${idx} but no elements in list(must load data before)`)
-        const headtop = this.#crudeData[nbData][0][0] // "header" interdit comme nom de variable       
+        if(idx===null)
+            idx=this.#crudeData.length-1
+        const headtop = this.#crudeData[idx][0][0] // "header" interdit comme nom de variable       
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("entête de fichier incorrect: "+ headtop)
         const pos = idx === null ? this.#crudeData.length-1 : idx
         for (let day = 0; day < this.#data[pos].nbtirages; day++) {
-            for (let num = 4; num < 9; num++) {
-                let freqPos = parseInt((this.#crudeData[pos][day][0]+"").split(";"))
+            for (var num = 4; num < 9; num++) {
+                var freqPos = parseInt((this.#crudeData[pos][day][0]+"").split(";"))
                 if(this.#sort)
                     this.#data[pos].normal.freq[freqPos[num]]++
             }
             if(this.#sort)
-                this.#data[nbData].chance.freq[freqPos[num]+49]++            
+                this.#data[pos].chance.freq[freqPos[num]+49]++            
         }
     }
 
@@ -234,7 +236,6 @@ class LotoAnalyser{
      * renvoie une configuration pour un rendu Chart.js
      */
     get config(){
-        this.#allFrequency()
         let datasFinal = []   
         let loterylabels = []     
         for (var i = 1; i < 60; i++) {
