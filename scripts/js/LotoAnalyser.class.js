@@ -153,9 +153,7 @@ class LotoAnalyser{
             throw new Error(`${reuse} 2 elements required for merge at least !`)
         if(allToMerge.length < 1 && toFinal !== null)
             throw new Error(`${reuse} 2 elements required for merge at least !`)            
-        // @WARNING !!!!!
-        // pour le nb de tirages de l'objet suivant il faut faire la somme des nb de tirages des indexes présents
-        // dans la liste prise en paramètre "allToMerge" !!!!
+
         if(toFinal === null){
             let finalElem = this.#getDataSetup("no title set", "#222222")
             finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
@@ -164,19 +162,21 @@ class LotoAnalyser{
                 this.#data[toFinal].normal.title,
                 this.#data[toFinal].normal.color
             )    
-            // a calculer
             let allNbData = this.#crudeData[toFinal][0].length  
-            // a coder ici (voir le précédent warning)
+            // calcule de la somme du nombre de données (nb de jours)
+            for (let j = 0; j < allToMerge.length; j++) {
+                allNbData += this.#crudeData[allToMerge[j]][0].length   
+            }
             finalElem.nbtirages = allNbData
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
             // pour chaque bloc de données
-            for (let i = 0; i < this.#data[k].normal.freq.length; i++) {
+            for (let i = 0; i < 50; i++) {
                 if(this.#data[k].normal.freq[i] !== null)
                     finalElem.normal.freq[i]+=this.#data[k].normal.freq[i]
             }    
-            for (;i<i+this.#data[k].chance.freq.length;i++) {
+            for (;i<60;i++) {
                 if(this.#data[i].chance.freq[i] !== null)
                     finalElem.chance.freq[i]+=this.#data[k].chance.freq[i]
             }                     
@@ -185,38 +185,45 @@ class LotoAnalyser{
         if(toFinal == null){
             this.#data.push(finalElem)
         } else {
-            for (let i=0; i<this.#data[toFinal].normal.freq.length; i++) {
+            for (let i=0; i<50; i++) {
                 if(finalElem.normal.freq[i] !== null)
                     this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
             }               
-            for (;i<i+this.#data[toFinal].chance.freq.length;i++) {
+            for (;i<60;i++) {
                 if(finalElem.chance.freq[i] !== null)
                     this.#data[toFinal].chance.freq[toFinal]+=finalElem.chance.freq[i]
             }               
         }
-        //@WARNING a faire (★★☆☆☆ pas tres important)
-        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
-        this.#reorder()
+        this.#reorder(allToMerge)
         
     }
-
-    #reorder(){
-        //@WARNING a faire (★★☆☆☆ pas tres important)
-        // suppression des sets fusionnés dans le tableau puis "tassage" vers l'index 0 de la liste
-        // a faire
-        if(allToMerge.length < 2) throw new Error(`${allToMerge} lenght < 2 !`)
-        if(typeof(toFinal) !== "int" | toFinal !== null) throw new Error(`${toFinal} must be int or null !`);
-        if(this.dataNumber <= 1) throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
+    /**
+     * permet de supprimer les éléments fusionnés une fois les données fusionnées
+     * @param {[int]} useless liste des indexes dont les données ont étés fusionnées
+     * @param {int} toDest destination des données (index)
+     */
+    #reorder(useless,toDest){
+        if(useless.length < 2) 
+            throw new Error(`${useless} lenght < 2 !`)
+        if(typeof(toDest) !== "int" | toDest !== null) 
+            throw new Error(`${toDest} must be int or null !`);
+        if(this.dataNumber <= 1) 
+            throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
         // verifie que les indexes sont correctes
-        for (let i = 0; i < allToMerge.length; i++) {
-            if(allToMerge[i] < 0) throw new Error(`value not in range : allToMerge[${i}]<0||allToMerge[${i}]>${this.dataNumber}`)
-            else if (allToMerge[i] >= this.dataNumber) throw new Error(`value out of range (${this.dataNumber})`)
+        for (let i = 0; i < useless.length; i++) {
+            if(useless[i] < 0) 
+                throw new Error(`value not in range : useless[${i}]<0||allToMerge[${i}]>${this.dataNumber}`)
+            else if (allToMerge[i] >= this.dataNumber) 
+                throw new Error(`value out of range (${this.dataNumber})`)
         }
-        if(toFinal < 0) throw new Error(`toFinal out of range (${toFinal}<0)`)
-        // merge des frequences
-        for (i = 0; i <allToMerge.length; i++) {
-            
+        if(toDest < 0) 
+            throw new Error(`toDest out of range (${toDest}<0)`)
+        for (let i = 0; i < useless; i++) {
+            if(useless[i] !== toDest) // on supprime pas la destination si elle se trouve dans les "useless"
+                this.#data.splice(useless[i],1)
         }
+        
+
     }
 
     /**
