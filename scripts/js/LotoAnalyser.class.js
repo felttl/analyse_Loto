@@ -108,13 +108,13 @@ class LotoAnalyser{
             throw new Error(`index=${idx} but no elements in list(must load data before)`)
         if(idx===null)
             idx=this.#crudeData.length-1
-        const headtop = this.#crudeData[idx][0][0] // "header" interdit comme nom de variable       
+        const headtop = this.#crudeData[idx][0] // "header" interdit comme nom de variable       
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("entête de fichier incorrect: "+ headtop)
         const pos = idx === null ? this.#crudeData.length-1 : idx
         for (let day = 0; day < this.#data[pos].nbtirages; day++) {
             for (var num = 4; num < 9; num++) {
-                var freqPos = parseInt((this.#crudeData[pos][day][0]+"").split(";"))
+                var freqPos = parseInt((this.#crudeData[pos][day]+"").split(";"))
                 if(this.#sort)
                     this.#data[pos].normal.freq[freqPos[num]]++
             }
