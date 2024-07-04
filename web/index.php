@@ -62,10 +62,6 @@
     //analyse.debug()
     const ctx = document.getElementById("vizualgraph")
 
-    console.log(<?php
-            echo csv2json('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
-        ;?>
-    )
     // tests de lecture /////////////////////
 
     // function readfXHR(filepath){
