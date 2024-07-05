@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>analyse Loto</title>
     <!-- our tooling -->
+    <script src="../scripts/js/maths+/basics.js"></script>  
     <script src="../scripts/js/LotoAnalyser.class.js"></script>    
+    <script src="../scripts/js/LotoAnalyserDOM.class.js"></script>    
     <!-- css rules -->
     <link type="text/css" rel="stylesheet" href="style.css">    
     <!-- external module(s) importing -->
@@ -21,18 +23,17 @@
 
 <body>
     <header>
-        <h1>analyse de loto et Euromillion</h1>
+        <h1>analyse du loto et de l'Euromillion</h1>
     </header>    
     <main>
         <section id="graph">
             <h1>analyse du loto</h1>
             
             <h3>par: <span class="change">
-                <select name="typSortLoto" id="">
-                    <option value="0">frequences des nombres tirés</option>
-                    <option value="1"></option>
-                </select>
-            </span></h3>
+                    <select name="lotoChange" id="typSortLoto">
+                    </select>
+                </span>
+            </h3>
             <canvas id="lotoGraph">
             </canvas>
             <br>
@@ -41,12 +42,25 @@
             <canvas id="EruMilGraph">
             </canvas>    
             <span></span>
-        </section>         
+        </section>       
+        <input type="button">  
     </main>
 </body>
 
 <script type="text/javascript"> 
     const ctx = document.getElementById("lotoGraph")
+    const optsGeneration = new LotoAnalyserDOM(
+        "typSortLoto",
+        {
+            name: "type de trie",
+            txtDisplay: "sort by number frequency"
+        },
+        {
+            name: "type de trie", 
+            txtDisplay: "sort by daily combination frequency"                       
+        }
+
+    )
     // traitement des données    
     let crudeData = JSON.parse(<?php 
             // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)
