@@ -41,7 +41,7 @@ class LotoAnalyserDOM{
         for (let i = 0; i < this.#elems.length; i++) {
             tmpOpt=document.createElement("option")
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
-            tmpOptId = randi(1e5,1e6-1)
+            tmpOptId = randi(1e5,1e6-1)+1e-1*i
             tmpOpt.setAttribute('optId', tmpOptId);
             this.#selectDOM.appendChild(tmpOpt)
         }

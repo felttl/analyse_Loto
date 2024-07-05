@@ -61,6 +61,7 @@
         }
 
     )
+    optsGeneration.putOptions()
     // traitement des données    
     let crudeData = JSON.parse(<?php 
             // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)
