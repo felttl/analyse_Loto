@@ -10,41 +10,50 @@
     <link type="text/css" rel="stylesheet" href="style.css">    
     <!-- external module(s) importing -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
+
     <?php
     // importation des outils supplémentaires
     include_once "../scripts/php/fileManager/fileManager.php";
-
     ?>
 </head>
 
 <body>
     <header>
-        <h1>analyse de loto</h1>
+        <h1>analyse de loto et Euromillion</h1>
     </header>    
     <main>
         <section id="graph">
-            <h3>frequences des nombres tirés :</h3>
-            <canvas id="vizualgraph">
+            <h1>analyse du loto</h1>
+            
+            <h3>par: <span class="change">
+                <select name="typSortLoto" id="">
+                    <option value="0">frequences des nombres tirés</option>
+                    <option value="1"></option>
+                </select>
+            </span></h3>
+            <canvas id="lotoGraph">
             </canvas>
-        </section>    
-        <section id="sLoto">
-            <h3>debugg zone</h3>
-            <?php
-            // zone de tests temporaire
-            echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
-            ?>
-        </section>        
+            <br>
+            <h1>analyse de l'Euromillion</h1>
+            <h3>par fréquence des nombres tirés</h3>
+            <canvas id="EruMilGraph">
+            </canvas>    
+            <span></span>
+        </section>         
     </main>
 </body>
 
 <script type="text/javascript"> 
+    const ctx = document.getElementById("lotoGraph")
+    // traitement des données    
     let crudeData = JSON.parse(<?php 
             // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)
             // simplifie la méthode pour passer du csv vers le json (trés pénible/impossible en js)
             echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
         ?>        
     );
-    // traitement des données
     let analyse = new LotoAnalyser(
         crudeData,
         "grand dec2017-dec2018",
@@ -59,8 +68,8 @@
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    //analyse.debug()
-    const ctx = document.getElementById("vizualgraph")
+    analyse.debug()
+
 
     // tests de lecture /////////////////////
 
