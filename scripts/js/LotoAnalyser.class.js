@@ -293,6 +293,8 @@ class LotoAnalyser{
 
     debug(){
         console.log(this.#crudeData)
+        console.log("partie frequence : ")
+        console.log(this.config)
     }
 
     // renvoie le nomre de blocs de données pour calculer une courbe en fonction de chaque éléments
