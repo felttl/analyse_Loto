@@ -27,19 +27,25 @@
     </header>    
     <main>
         <section id="graph" class="box-content">
-            <h1>analyse du loto</h1>
+            <h1 class="underlinedB">analyse du loto</h1>
             
-            <h3>par: <span class="change box-content">
-                    <select name="lotoChange" id="typSortLoto"
-                    title="choix filtrage">
+            <h3>par: 
+                <span class=" box-content sesp">
+                    <select name="lotoChange" title=" choix filtrage" class="lsclear">
                     </select>
-                </span>
+                </span>.
+                
             </h3>
             <canvas id="lotoGraph">
             </canvas>
             <br>
-            <h1>analyse de l'Euromillion</h1>
-            <h3>par fréquence des nombres tirés</h3>
+            <h1 class="underlinedB">analyse de l'Euromillion</h1>
+            <h3>par :
+                <span class="change box-content sesp">
+                    <select name="lotoChange" title="lsclear choix filtrage">
+                    </select>
+                </span>
+            </h3>
             <canvas id="EruMilGraph">
             </canvas>    
             <span></span>
@@ -56,11 +62,11 @@
         [
             {
                 name: "type de trie",
-                txtDisplay: "trie par frequence des numeros"
+                txtDisplay: "frequence des numeros"
             },
             {
                 name: "type de trie", 
-                txtDisplay: "trie par frequence des combinaisons journalières"                       
+                txtDisplay: "frequence des combinaisons journalières"                       
             }            
         ]
     )

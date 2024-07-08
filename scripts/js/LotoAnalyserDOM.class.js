@@ -27,13 +27,16 @@ class LotoAnalyserDOM{
         // ajout d'eun evenement pour refaire les calculs
         // et mettre a jours le graphique si le mode est changé
         // avec la liste déroulante
-        this.#selectDOM.addEventListener("onmouseup", function(){
+        let DOMwidth = this.#selectDOM.style.width
+        let DOMchildWidth = this.#selectDOM.firstChild.style.width
+        this.#selectDOM.addEventListener("click", function(){
             //@WARNING a coder pour effecteur les mises a jour 
             // (raffraichissement)
-            
+
             // mise a jour de la taille de l'option en fonction
             // de la taille du contenu
-            this.#selectDOM.style.width = this.#selectDOM.firstChild.style.width
+            DOMwidth = DOMchildWidth
+            console.log(8)
         })
     }
 
@@ -45,12 +48,13 @@ class LotoAnalyserDOM{
         let tmpOptId=null
         for (let i = 0; i < this.#elems.length; i++) {
             tmpOpt=document.createElement("option")
-            console.log("put options "+this.#elems[i].txtDisplay)
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
             tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-1*i
             tmpOpt.setAttribute('optId', tmpOptId);
+            console.log(tmpOpt)
             this.#selectDOM.appendChild(tmpOpt)
         }
+        this.#selectDOM.firstChild.selected = true
     }
     /**
      * supprime toutes les options du select qui ont l'attribut "optId"

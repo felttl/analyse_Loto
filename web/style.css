@@ -4,6 +4,12 @@
   @version: 1.0.2
 */
 
+/* doc 
+
+underlinedB: crée une ligne de soulignement épaisse en Bleu (B)
+pareil pour le Rouge (R) et Vert (V) (underlinedV)
+*/
+
 /*fonts -------------------------------------- */
 @font-face {
   font-family: Fredoka-Regular;
@@ -95,7 +101,7 @@ header h1{
     border-radius: var(--border-radius-g);
     margin: 10px auto 10px auto;
     position: relative;
-
+    overflow: hidden;
 }
 
 main{
@@ -119,20 +125,30 @@ main :where(p,span,h1,h2,h3,h4,h5,h6)[id^=debug]{
     margin: 0;
 }
 
-h2,h3,h4{
+.underlinedB{
+	text-decoration: underline 11px rgb(43, 93, 168);
+}
+
+.underlinedR{
+	text-decoration: underline 11px rgb(187, 63, 63);  
+}
+
+.underlinedV{
+	text-decoration: underline 11px rgb(50, 136, 44);    
+}
+
+/* reminder: margin: top right bottom left */
+h1,h2{
+  margin: 20px auto 20px 0;
+  background-color: transparent;
+}
+
+h3,h4{
     background-color: transparent;
     text-underline-offset: 5px;
     margin: 30px 20px 30px 0;  
 }
-h2{
-	text-decoration: underline 10px rgb(187, 63, 63);  
-}
-h3{
-	text-decoration: underline 10px rgb(43, 93, 168);
-}
-h4{
-	text-decoration: underline 10px rgb(50, 136, 44);  
-}
+
 /* limit text overflow x */
 #graph, #sLoto{
   word-wrap: break-word;
@@ -143,20 +159,38 @@ h4{
   color: black;
   border-radius: 5px;
 }
+/* permet de mettre une liste deroulante 
+avec le moins de déco possible */
+.lsclear{
+  color: var(--col-th-1);
+  background-color: transparent;
+  border: none;
+}
 
 select{
   border: none;
   outline: none;
   user-select: none;
-  width: min-content;
+  width: fit-content;
+  border: 0.1px solid black;
+  border-radius: 5px;    
 }
-option{
-  width: max-content;
-}
+
 
 select:hover{
-  background-color: #1013be6b;
+  background-color: #8384ac6b;
+
 }
 
-option:
+.sesp{
+  height: 0 !important;
+  width: 0 !important;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  color: transparent;
+  outline: none;
+}
+
+
 /* end page */
