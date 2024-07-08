@@ -26,11 +26,12 @@
         <h1>analyse du loto et de l'Euromillion</h1>
     </header>    
     <main>
-        <section id="graph">
+        <section id="graph" class="box-content">
             <h1>analyse du loto</h1>
             
-            <h3>par: <span class="change">
-                    <select name="lotoChange" id="typSortLoto">
+            <h3>par: <span class="change box-content">
+                    <select name="lotoChange" id="typSortLoto"
+                    title="choix filtrage">
                     </select>
                 </span>
             </h3>
@@ -43,25 +44,28 @@
             </canvas>    
             <span></span>
         </section>       
-        <input type="button">  
     </main>
 </body>
-
+<footer>
+    fait par Félix TTL 6/2024
+</footer>
 <script type="text/javascript"> 
     const ctx = document.getElementById("lotoGraph")
-    const optsGeneration = new LotoAnalyserDOM(
+    let optsGeneration = new LotoAnalyserDOM(
         "typSortLoto",
-        {
-            name: "type de trie",
-            txtDisplay: "sort by number frequency"
-        },
-        {
-            name: "type de trie", 
-            txtDisplay: "sort by daily combination frequency"                       
-        }
-
+        [
+            {
+                name: "type de trie",
+                txtDisplay: "trie par frequence des numeros"
+            },
+            {
+                name: "type de trie", 
+                txtDisplay: "trie par frequence des combinaisons journalières"                       
+            }            
+        ]
     )
     optsGeneration.putOptions()
+
     // traitement des données    
     let crudeData = JSON.parse(<?php 
             // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)

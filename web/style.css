@@ -64,21 +64,30 @@ section{
     height: 100%;
 }
 
-header{
+header, footer{
     width: var(--content-width-main-flow);
-    height: 100px;
+    height: max-content;
     background-color: var(--col-th-1);
     border-radius: none;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;   
     margin: 0 auto;
-    margin-bottom: var(--content-sep-gap-main-flow); 
     text-align: center;
     padding: 10px;
 }
 
+header{
+    border-bottom-left-radius: 10px;
+    margin-bottom: var(--content-sep-gap-main-flow); 
+    border-bottom-right-radius: 10px;
+}
+footer{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: var(--content-sep-gap-main-flow);  
+}
+
 header h1{
-    width: max-content;
+    width:100%;
+    max-width: max-content;
     height: min-content;
     background-color: transparent;
     color: black;
@@ -131,6 +140,23 @@ h4{
 
 .change{
   background-color: #a9acb7;
+  color: black;
+  border-radius: 5px;
 }
 
+select{
+  border: none;
+  outline: none;
+  user-select: none;
+  width: min-content;
+}
+option{
+  width: max-content;
+}
+
+select:hover{
+  background-color: #1013be6b;
+}
+
+option:
 /* end page */
