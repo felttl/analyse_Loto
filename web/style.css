@@ -36,6 +36,7 @@ pareil pour le Rouge (R) et Vert (V) (underlinedV)
 :root{
     --border-radius-g: 20px;
     --col-th-1: #6a76ffab;
+    --col-th-1-do: #0a17a8dc; /*dark opaque*/
     --col-th-2: #7a7a7a;
     --col-th-2-op: #0000007b; 
     --col-th-3: #ffb2b2;
@@ -125,6 +126,10 @@ main :where(p,span,h1,h2,h3,h4,h5,h6)[id^=debug]{
     margin: 0;
 }
 
+p,span,option,select{
+  font-size: 25px;
+}
+
 .underlinedB{
 	text-decoration: underline 11px rgb(43, 93, 168);
 }
@@ -162,7 +167,7 @@ h3,h4{
 /* permet de mettre une liste deroulante 
 avec le moins de déco possible */
 .lsclear{
-  color: var(--col-th-1);
+  color: var(--col-th-1-do);
   background-color: transparent;
   border: none;
 }

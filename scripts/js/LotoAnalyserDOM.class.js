@@ -23,21 +23,34 @@ class LotoAnalyserDOM{
      */
     constructor(selectIdTagName,elems){
         this.#selectDOM=document.getElementById(selectIdTagName)
+        if(this.#selectDOM == null) 
+            throw new Error(`error: selectIdTagName: (${selectIdTagName}) does not exist`)
         this.#elems=elems
         // ajout d'eun evenement pour refaire les calculs
         // et mettre a jours le graphique si le mode est changé
         // avec la liste déroulante
-        let DOMwidth = this.#selectDOM.style.width
-        let DOMchildWidth = this.#selectDOM.firstChild.style.width
         this.#selectDOM.addEventListener("click", function(){
             //@WARNING a coder pour effecteur les mises a jour 
             // (raffraichissement)
-
             // mise a jour de la taille de l'option en fonction
             // de la taille du contenu
-            DOMwidth = DOMchildWidth
-            console.log(8)
+            const selectedOption = this.options[this.selectedIndex]
+            this.style.width = selectedOption.value
+            //  = this.DOMchildWidth
+            // console.log(8)
         })
+    }
+    ////////////// GETTERS ////////////////////
+    get selectDOMwidth(){
+        return this.#selectDOM.style.width 
+    }
+
+    get selectDOMchildWidth(){
+        return this.#selectDOM.firstChild.style.width
+    }
+    ////////////// SETTERS ////////////////////
+    setSelectDOMwidth(elem){
+        this.#selectDOM.style.width = elem
     }
 
 

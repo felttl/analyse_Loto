@@ -28,21 +28,21 @@
     <main>
         <section id="graph" class="box-content">
             <h1 class="underlinedB">analyse du loto</h1>
-            
-            <h3>par: 
-                <span class=" box-content sesp">
-                    <select name="lotoChange" title=" choix filtrage" class="lsclear">
+            <p>par: 
+                <span class="box-content sesp">
+                    <select name="lotoChange" title=" choix filtrage" class="lsclear"
+                    id="typSortLoto">
                     </select>
-                </span>.
-                
-            </h3>
+                </span>                
+            </p>
             <canvas id="lotoGraph">
             </canvas>
             <br>
             <h1 class="underlinedB">analyse de l'Euromillion</h1>
             <h3>par :
                 <span class="change box-content sesp">
-                    <select name="lotoChange" title="lsclear choix filtrage">
+                    <select name="lotoChange" title="lsclear choix filtrage" class="lsclear"
+                    id="typSortEuromi">
                     </select>
                 </span>
             </h3>
