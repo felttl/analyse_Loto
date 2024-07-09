@@ -128,6 +128,7 @@ main :where(p,span,h1,h2,h3,h4,h5,h6)[id^=debug]{
 
 p,span,option,select{
   font-size: 25px;
+  background-color: transparent;
 }
 
 .underlinedB{
@@ -170,13 +171,14 @@ avec le moins de déco possible */
   color: var(--col-th-1-do);
   background-color: transparent;
   border: none;
+  text-decoration: none;
+  appearance: none;
 }
 
 select{
   border: none;
   outline: none;
   user-select: none;
-  width: fit-content;
   border: 0.1px solid black;
   border-radius: 5px;    
 }
@@ -186,10 +188,12 @@ select:hover{
   background-color: #8384ac6b;
 
 }
-
+option{
+  width: max-content;
+}
 .sesp{
   height: 0 !important;
-  width: 0 !important;
+  width: fit-content !important;
   margin: 0;
   padding: 0;
   background-color: transparent;
@@ -197,5 +201,8 @@ select:hover{
   outline: none;
 }
 
+canvas{
+  width: 100% !important;
+}
 
 /* end page */

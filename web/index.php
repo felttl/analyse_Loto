@@ -28,25 +28,27 @@
     <main>
         <section id="graph" class="box-content">
             <h1 class="underlinedB">analyse du loto</h1>
-            <p>par: 
+            <p>par :
                 <span class="box-content sesp">
                     <select name="lotoChange" title=" choix filtrage" class="lsclear"
                     id="typSortLoto">
                     </select>
                 </span>                
             </p>
+            <br>
             <canvas id="lotoGraph">
             </canvas>
             <br>
             <h1 class="underlinedB">analyse de l'Euromillion</h1>
-            <h3>par :
+            <p>par :
                 <span class="change box-content sesp">
                     <select name="lotoChange" title="lsclear choix filtrage" class="lsclear"
                     id="typSortEuromi">
                     </select>
                 </span>
-            </h3>
-            <canvas id="EruMilGraph">
+            </p>
+            <br>
+            <canvas id="EroMilGraph">
             </canvas>    
             <span></span>
         </section>       
@@ -57,21 +59,23 @@
 </footer>
 <script type="text/javascript"> 
     const ctx = document.getElementById("lotoGraph")
-    let optsGeneration = new LotoAnalyserDOM(
-        "typSortLoto",
-        [
-            {
-                name: "type de trie",
-                txtDisplay: "frequence des numeros"
-            },
-            {
-                name: "type de trie", 
-                txtDisplay: "frequence des combinaisons journalières"                       
-            }            
-        ]
-    )
-    optsGeneration.putOptions()
-
+    const typesSort = [
+        {
+            name: "type de trie",
+            txtDisplay: "fréquence des numéros"
+        },
+        {
+            name: "type de trie", 
+            txtDisplay: "fréquence des combinaisons journalières"                       
+        }          
+    ]
+    let lotoDOM = new LotoAnalyserDOM("typSortLoto",typesSort)
+    lotoDOM.putOptions()
+    lotoDOM.fixRefresh()
+    let EuroMioDOM = new LotoAnalyserDOM("typSortEuromi",typesSort)
+    EuroMioDOM.putOptions() 
+    EuroMioDOM.fixRefresh() 
+    
     // traitement des données    
     let crudeData = JSON.parse(<?php 
             // attention ! toutes les données se retrouyveront dans le script js et le code de la page html (les erreurs aussi !)

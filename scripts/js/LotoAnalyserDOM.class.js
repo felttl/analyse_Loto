@@ -26,6 +26,10 @@ class LotoAnalyserDOM{
         if(this.#selectDOM == null) 
             throw new Error(`error: selectIdTagName: (${selectIdTagName}) does not exist`)
         this.#elems=elems
+
+    }
+
+    fixRefresh(){
         // ajout d'eun evenement pour refaire les calculs
         // et mettre a jours le graphique si le mode est changé
         // avec la liste déroulante
@@ -36,10 +40,9 @@ class LotoAnalyserDOM{
             // de la taille du contenu
             const selectedOption = this.options[this.selectedIndex]
             this.style.width = selectedOption.value
-            //  = this.DOMchildWidth
-            // console.log(8)
-        })
+        })        
     }
+
     ////////////// GETTERS ////////////////////
     get selectDOMwidth(){
         return this.#selectDOM.style.width 
@@ -54,9 +57,10 @@ class LotoAnalyserDOM{
     }
 
 
-
+    /**
+     * ajoute toutes les options dans la balise "select" 
+     */
     putOptions(){
-        // qjoute les options pour les retrouver
         let tmpOpt=null
         let tmpOptId=null
         for (let i = 0; i < this.#elems.length; i++) {
@@ -64,7 +68,6 @@ class LotoAnalyserDOM{
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
             tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-1*i
             tmpOpt.setAttribute('optId', tmpOptId);
-            console.log(tmpOpt)
             this.#selectDOM.appendChild(tmpOpt)
         }
         this.#selectDOM.firstChild.selected = true
