@@ -58,7 +58,8 @@
     fait par Félix TTL 6/2024
 </footer>
 <script type="text/javascript"> 
-    const ctx = document.getElementById("lotoGraph")
+    const ctxLoto = document.getElementById("lotoGraph")
+    const ctxEromio = document.getElementById("EroMilGraph")
     const typesSort = [
         {
             name: "type de trie",
@@ -83,7 +84,7 @@
             echo csv2Json('../donnees/grand_loto/1 grandnoel_dec2017-dec2018.csv');
         ?>        
     );
-    let analyse = new LotoAnalyser(
+    let analyseLoto = new LotoAnalyser(
         crudeData,
         "grand dec2017-dec2018",
         "#5555ff"
@@ -92,33 +93,26 @@
             echo csv2Json('../donnees/grand_loto/2 grand_dec2019-dec2023.csv');
         ?>        
     )
-    analyse.addData(
+    analyseLoto.addData(
         crudeData,
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    analyse.debug()
+    analyseLoto.debug()
 
 
-    // tests de lecture /////////////////////
+    // analyse pour l'euromillion
+    // crudeData = JSON.parse(
+    //     "something here (data)............",
+    //     "something here (title)............",
+    //     "something here (color)............"
+    // )
 
-    // function readfXHR(filepath){
-    //     fetch(filepath)
-    //         .then(res => res.text())
-    //         .then(data => {
-    //             return data.text()
-    //         })     
-    //     return fetch   
-    // }
+    // let analyseEuromio = new LotoAnalyser(
+
+    // )
 
 
-    // console.log("yeap") 
-    // fetch('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
-    //     .then(r=>r.text())
-    //     .then(text => {
-    //         lines = text.split("\n")
-    //     })
-    //readf('../donnees/grand_loto/2 grand_dec2019-dec2023.csv')
 
     ////////////////////////////////////////////////////
     // const labels = [1,2,3,4,5,6,7]
@@ -148,7 +142,8 @@
     //     data: data
     // };
     ////////////////////////////////////////////////////
-    const chart = new Chart(ctx, analyse.config)
+    const lotoChart = new Chart(ctxLoto, analyseLoto.config)
+    //const euroMioChart = new Chart(ctxEromio, analyseEuroMio.config)
 
 </script>    
 </html>

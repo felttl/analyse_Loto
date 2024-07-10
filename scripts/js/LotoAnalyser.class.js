@@ -38,6 +38,9 @@ class LotoAnalyser{
     #data = []
     #items = 0
     #sort = true // true by frequency else by order of draw
+    // warn si jamais on veut merger des données qui ont déja 
+    // étés analysé mais avec un mode de frequencage différent de celui actuel
+    #wasAnalysed = false
 
     constructor (jsonData,title,color) {
         this.addData(jsonData,title,color)    
@@ -58,40 +61,10 @@ class LotoAnalyser{
         let tmp = this.#getDataSetup(title,color)
         tmp.nbtirages = this.#crudeData[this.#items][0].length
         this.#data.push(tmp)
-        this.#calcFrequency(this.#items)
+        this.calcFrequency(this.#items)
         this.#items++  
     }
 
-    // renvoie un setup vide
-    #getDataSetup(title,color){
-        // initialisation des frequences
-        let tpmFreq = []
-        let tmpFreqC = []
-        // remplissage du vide pour la supperposition        
-        for (var i = 1; i < 50; i++){
-            tpmFreq.push(0)
-            tmpFreqC.push(null)
-        }
-        for (; i < 60; i++){ 
-            tpmFreq.push(null)
-            tmpFreqC.push(0) 
-        }  
-        return {
-                // 1,2,3,etc...49,null,null,etc (10x)
-                normal: {
-                    titre: title,
-                    freq: tpmFreq,
-                    color: color
-                },
-                // nul,null,null,etc...,1,2,3,4,etc...10
-                chance: {
-                    titre: title+"(n°chance)",
-                    freq: tmpFreqC,
-                    color: darkener(color)
-                },
-                nbtirages: 0
-        }
-    }
 
     /**
      * permet de calculer les fréquences d'un bloc a la fois 
@@ -99,7 +72,8 @@ class LotoAnalyser{
      * données brutes ajouté
      * @param {*} idx index de l'élément sur lequel calculer les fréquences
      */
-    #calcFrequency(idx=null){
+    calcFrequency(idx=null){
+        this.#wasAnalysed=true
         if(idx >= this.#crudeData.length) 
             throw new Error(`${idx}>${this.#crudeData.length} out of range`)
         if(idx < 0)
@@ -112,29 +86,71 @@ class LotoAnalyser{
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("entête de fichier incorrect: "+ headtop)
         const pos = idx === null ? this.#crudeData.length-1 : idx
-        for (let day = 0; day < this.#data[pos].nbtirages; day++) {
-            for (var num = 4; num < 9; num++) {
-                var freqPos = parseInt((this.#crudeData[pos][day]+"").split(";"))
-                if(this.#sort)
-                    this.#data[pos].normal.freq[freqPos[num]]++
-            }
-            if(this.#sort)
-                this.#data[pos].chance.freq[freqPos[num]+49]++            
+        switch (this.#sort) {
+            case 0:
+                this.#freqByNum(pos)
+                break;
+            case 1:
+                
+                break;   
+            case 2:
+                
+                break;                   
+            case 3:
+                
+                break;   
+            default:
+                throw new Error(`invalid sorting identifier : id=(${this.#sort})<0 or >max`);
         }
+
     }
 
+
     /**
-     * calcule toutes les fréquences d'apparition des numéros de 1 a 49 (inclus)
-     * des 6 numéros tirés a chaque jours (par jeux de données)
-     * en plus du numéro chance valant entre 1 et 9 (inclus)
-     * #fonctionnalité supplémentaire :
-     *  - OK trier par fréquence
-     *  - trier par date
-     *  - trier par jours (fréquences des tirages sortis du plus élevé au moins élevés (donc de 6 numero et du numero chance sortis))
+     * O pour le tri numéro par numéro par fréquence d'apparation sans distinction
+     * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclu (pas num chance)
+     * 2 pareil que pour le 1 mais le n°chance est compris dedans
+     * 3 par fréquence des jours de la semaine des tirages (freq de lun a dim) 
+     * 
+     * 
+     */
+
+    /**
+     * fait le tri selon la fréquence des nombre et rien d'autre !
+     * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique
+     * @param {boolean} luckyIn false frequence des nombres chance non calculés, true il sont inclus
+     * 
+     */
+    #freqByNum(dataBloc,luckyIn=false){
+        for (let day = 0; day < this.#data[dataBloc].nbtirages; day++) {
+            for (var num = 4; num < 9; num++) {
+                var freqPos = parseInt((this.#crudeData[dataBloc][day]+"").split(";"))
+                this.#data[dataBloc].normal.freq[freqPos[num]]++
+            }
+            // num chance
+            this.#data[dataBloc].chance.freq[freqPos[num]+49]++            
+        }        
+    }
+    /**
+     * fait le tri selon la fréquence des nombre et rien d'autre !
+     */
+    #freqByDailyCombination(dataBloc){
+        for (let day = 0; day < this.#data[pos].nbtirages; day++) {
+            // a coder
+        }        
+    }
+
+    // rajoute les valeur clefs (moy, mid, diff, granddiff, eqtype, QTS)
+
+    /**
+     * calcule toutes les fréquence pour tous les blocs de données
      */
     #allFrequency(){
-        for (let nbData=0;nbData<this.#items;nbData++ ){ // blocs de données
-            this.#calcFrequency(nbData)
+        // blocs de données
+        if(this.#wasAnalysed)
+            console.warn("be carefull data was already analysed and it can overwrite the analysis")
+        for (let nbData=0;nbData<this.#items;nbData++){ 
+            this.calcFrequency(nbData)
         }
     }
 
@@ -146,6 +162,8 @@ class LotoAnalyser{
      * @param {int|null} toFinal merge all to existing one or if null creating a new one
      */
     merge(allToMerge, toFinal){
+        if(this.#wasAnalysed)
+            console.warn("in: LotoAnalyser->merge()\n\tWarning:\t don't merge with different analyse mode, it can produce weird analysis")
         const reuse = `allToMerge=${allToMerge}, tofinal=${toFinal}`
         if(typeof(toFinal) !== "int" && toFinal !== "null") 
             throw new Error(`${toFinal} must be int or null !`)        
@@ -235,9 +253,43 @@ class LotoAnalyser{
         this.#sort = !this.#sort
     }
 
+    /////////////// GETTERS ///////////
+
+    // renvoie un setup vide
+    #getDataSetup(title,color){
+        // initialisation des frequences
+        let tpmFreq = []
+        let tmpFreqC = []
+        // remplissage du vide pour la supperposition        
+        for (var i = 1; i < 50; i++){
+            tpmFreq.push(0)
+            tmpFreqC.push(null)
+        }
+        for (; i < 60; i++){ 
+            tpmFreq.push(null)
+            tmpFreqC.push(0) 
+        }  
+        return {
+                // 1,2,3,etc...49,null,null,etc (10x)
+                normal: {
+                    titre: title,
+                    freq: tpmFreq,
+                    color: color
+                },
+                // nul,null,null,etc...,1,2,3,4,etc...10
+                chance: {
+                    titre: title+"(n°chance)",
+                    freq: tmpFreqC,
+                    color: darkener(color)
+                },
+                nbtirages: 0
+        }
+    }
+
     get isSortedByFreq(){
         return this.#sort
     }
+
 
     /**
      * renvoie une configuration pour un rendu Chart.js
@@ -282,6 +334,7 @@ class LotoAnalyser{
         }
     }
 
+    ////////////////////////////// SETTERS ///////////////////////////
     /**
      * 
      * @param {*} index numero d'index du dataset pour lequel changer les couleurs
@@ -290,6 +343,23 @@ class LotoAnalyser{
     setColor(index, color){
         this.#data[index]=color
     }
+
+    /**
+     * permet de faire l'analyse de fréquence selon certains critères
+     * @param {int} id (défaut 0):
+     * O pour le tri numéro par numéro par fréquence d'apparation sans distinction
+     * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclu (pas num chance)
+     * 2 pareil que pour le 1 mais le n°chance est compris dedqns
+     * 3 par fréquence des jours de la semaine des tirages (freq de lun a dim) 
+     * 
+     * 
+     */
+    setSortType(id=0){
+        if(typeof(id)!=="number" && Math.floor(id)!==id)
+            throw new Error(`id (${id}) is not an integer`)
+        this.#sort=id
+    }
+
 
     debug(){
         console.log(this.#crudeData)

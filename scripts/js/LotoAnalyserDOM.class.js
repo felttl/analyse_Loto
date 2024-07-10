@@ -18,8 +18,11 @@ class LotoAnalyserDOM{
      * {
      *      name: "name",
      *      txtDisplay: "sort by freq"
+     *      value: 0
      *      
      * }
+     * value est opptionnel est sera l'indice de l'élément par defaut
+     * (sauf précisé)
      */
     constructor(selectIdTagName,elems){
         this.#selectDOM=document.getElementById(selectIdTagName)
@@ -68,6 +71,7 @@ class LotoAnalyserDOM{
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
             tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-1*i
             tmpOpt.setAttribute('optId', tmpOptId);
+            tmpOpt[tmpOpt.selectedIndex].value = this.#elems[i].value ?? i
             this.#selectDOM.appendChild(tmpOpt)
         }
         this.#selectDOM.firstChild.selected = true
