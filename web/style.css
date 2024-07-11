@@ -6,8 +6,10 @@
 
 /* doc 
 
-underlinedB: crée une ligne de soulignement épaisse en Bleu (B)
-pareil pour le Rouge (R) et Vert (V) (underlinedV)
+- underlinedB: crée une ligne de soulignement épaisse en Bleu (B)
+  pareil pour le Rouge (R) et Vert (V) (underlinedV)
+- lsclear: permet de mettre une liste deroulante dans du texte 
+  de façon propre et agréable
 */
 
 /*fonts -------------------------------------- */

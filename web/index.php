@@ -62,13 +62,17 @@
     const ctxEromio = document.getElementById("EroMilGraph")
     const typesSort = [
         {
-            name: "type de trie",
+            name: "trie par num unique",
             txtDisplay: "fréquence des numéros"
         },
         {
-            name: "type de trie", 
+            name: "trie ensemble de nums", 
             txtDisplay: "fréquence des combinaisons journalières"                       
-        }          
+        },
+        {
+            name: "trie jour",
+            txtDisplay: "fréquence des apparition des jours"
+        }
     ]
     let lotoDOM = new LotoAnalyserDOM("typSortLoto",typesSort)
     lotoDOM.putOptions()

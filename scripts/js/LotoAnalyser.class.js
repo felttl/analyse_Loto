@@ -37,9 +37,7 @@ class LotoAnalyser{
     #crudeData = [] // matrix (arrays)
     #data = []
     #items = 0
-    #sort = true // true by frequency else by order of draw
-    // warn si jamais on veut merger des données qui ont déja 
-    // étés analysé mais avec un mode de frequencage différent de celui actuel
+    #sort = 0 // par ferquence des numbres tirés (pour chaque nombres, par defaut c'est 0)
     #wasAnalysed = false
 
     constructor (jsonData,title,color) {
@@ -73,7 +71,6 @@ class LotoAnalyser{
      * @param {*} idx index de l'élément sur lequel calculer les fréquences
      */
     calcFrequency(idx=null){
-        this.#wasAnalysed=true
         if(idx >= this.#crudeData.length) 
             throw new Error(`${idx}>${this.#crudeData.length} out of range`)
         if(idx < 0)
@@ -90,19 +87,22 @@ class LotoAnalyser{
             case 0:
                 this.#freqByNum(pos)
                 break;
-            case 1:
-                
+            case 1|2:
+                // a coder
                 break;   
-            case 2:
+            case 3:
+                // a coder
                 
                 break;                   
-            case 3:
-                
+            case 4:
+                // a coder
+
                 break;   
             default:
-                throw new Error(`invalid sorting identifier : id=(${this.#sort})<0 or >max`);
+                throw new Error(`invalid sorting identifier : id=(${this.#sort})<0 or >max`)
+                break
         }
-
+        this.#wasAnalysed=true        
     }
 
 
@@ -290,6 +290,14 @@ class LotoAnalyser{
         return this.#sort
     }
 
+    /**
+     * renvoie le nomre de blocs de données pour calculer une courbe en fonction 
+     * de chaque éléments
+     * 
+     */
+    get dataNumber(){
+        return this.#data.length
+    }
 
     /**
      * renvoie une configuration pour un rendu Chart.js
@@ -355,21 +363,22 @@ class LotoAnalyser{
      * 
      */
     setSortType(id=0){
+        // coherence test
         if(typeof(id)!=="number" && Math.floor(id)!==id)
             throw new Error(`id (${id}) is not an integer`)
+        if(id < 0)
+            throw new Error(`id ${id} out of range (id<0)`)
         this.#sort=id
     }
 
 
     debug(){
+        console.log('%cdebugg mode!', 'color: #229922; font-weight: bold; background-color: #8dd38d55')
         console.log(this.#crudeData)
         console.log("partie frequence : ")
         console.log(this.config)
     }
 
-    // renvoie le nomre de blocs de données pour calculer une courbe en fonction de chaque éléments
-    get dataNumber(){
-        return this.#data.length
-    }
+
 
 }

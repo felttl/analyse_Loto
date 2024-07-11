@@ -32,17 +32,23 @@ class LotoAnalyserDOM{
 
     }
 
+    /**
+     * fixe les évènements liés aux rafraichissement 
+     * (lors du clique utilisateur, et autres interactions)
+     * @warning : toujours faire la méthode putOptions() avant de faire fixRefresh()
+     * car l'élément select serait vide sinon et les évènement seraient inutilisables
+     */
     fixRefresh(){
-        // ajout d'eun evenement pour refaire les calculs
+        // refais les calculs
         // et mettre a jours le graphique si le mode est changé
         // avec la liste déroulante
-        this.#selectDOM.addEventListener("click", function(){
+        const localselect =  this.#selectDOM
+        this.#selectDOM.addEventListener("change", function(){
             //@WARNING a coder pour effecteur les mises a jour 
             // (raffraichissement)
-            // mise a jour de la taille de l'option en fonction
-            // de la taille du contenu
-            const selectedOption = this.options[this.selectedIndex]
-            this.style.width = selectedOption.value
+            // mise a jour de la taille de l'option en fonction de la taille du contenu
+            const selectedOption = localselect.options[localselect.selectedIndex]
+            localselect.style.clientWidth = selectedOption.value
         })        
     }
 
@@ -71,10 +77,13 @@ class LotoAnalyserDOM{
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
             tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-1*i
             tmpOpt.setAttribute('optId', tmpOptId);
-            tmpOpt[tmpOpt.selectedIndex].value = this.#elems[i].value ?? i
+            // if(this.#elems[i].value === undefined || this.#elems[i].value === null)
+            //     tmpOpt[tmpOpt.selectedIndex].value = i
+            // else
+            //     tmpOpt[tmpOpt.selectedIndex].value = this.#elems[i].value
             this.#selectDOM.appendChild(tmpOpt)
         }
-        this.#selectDOM.firstChild.selected = true
+        this.#selectDOM.firstChild.selected = true // first prior
     }
     /**
      * supprime toutes les options du select qui ont l'attribut "optId"
