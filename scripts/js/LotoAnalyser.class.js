@@ -124,11 +124,13 @@ class LotoAnalyser{
     #freqByNum(dataBloc,luckyIn=false){
         for (let day = 0; day < this.#data[dataBloc].nbtirages; day++) {
             for (var num = 4; num < 9; num++) {
-                var freqPos = parseInt((this.#crudeData[dataBloc][day]+"").split(";"))
-                this.#data[dataBloc].normal.freq[freqPos[num]]++
+                var freqPos = this.#crudeData[dataBloc]
+                freqPos = parseInt(freqPos[num])
+                if (num<5&&day>0&&day<3) console.log(freqPos)
+                this.#data[dataBloc].normal.freq[freqPos]++
             }
             // num chance
-            this.#data[dataBloc].chance.freq[freqPos[num]+49]++            
+            this.#data[dataBloc].chance.freq[freqPos+49]++            
         }        
     }
     /**
@@ -193,7 +195,7 @@ class LotoAnalyser{
             for (let i = 0; i < 50; i++) {
                 if(this.#data[k].normal.freq[i] !== null)
                     finalElem.normal.freq[i]+=this.#data[k].normal.freq[i]
-            }    
+            }
             for (;i<60;i++) {
                 if(this.#data[i].chance.freq[i] !== null)
                     finalElem.chance.freq[i]+=this.#data[k].chance.freq[i]
@@ -374,7 +376,7 @@ class LotoAnalyser{
 
     debug(){
         console.log('%cdebugg mode!', 'color: #229922; font-weight: bold; background-color: #8dd38d55')
-        console.log(this.#crudeData)
+        console.log("données brut: ",this.#crudeData)
         console.log("partie frequence : ")
         console.log(this.config)
     }
