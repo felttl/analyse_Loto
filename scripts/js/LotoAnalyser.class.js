@@ -52,12 +52,12 @@ class LotoAnalyser{
      */
     addData(data,title,color){
         this.#crudeData.push(data)
-        // on transforme l'entête (str) en tableau (lisiblité)
-        this.#crudeData[this.#items][0][0] = ((this.#crudeData[this.#items][0][0])+"").split(";")
-        this.#crudeData[this.#items].pop() // dernière ligne inutile
+        // nettoyage des imperfections
+        this.#crudeData[this.#items][0][0] = this.#crudeData[this.#items][0][0][0]
+        console.log(data)
         // on rajoute un bloc de données utile(vide) avec la bonne structure (exploitable plus facilement)
         let tmp = this.#getDataSetup(title,color)
-        tmp.nbtirages = this.#crudeData[this.#items][0].length
+        tmp.nbtirages = this.#crudeData[this.#items].length-1
         this.#data.push(tmp)
         this.calcFrequency(this.#items)
         this.#items++  
@@ -89,6 +89,7 @@ class LotoAnalyser{
                 break;
             case 1|2:
                 // a coder
+
                 break;   
             case 3:
                 // a coder
@@ -122,16 +123,17 @@ class LotoAnalyser{
      * 
      */
     #freqByNum(dataBloc,luckyIn=false){
-        for (let day = 0; day < this.#data[dataBloc].nbtirages; day++) {
-            for (var num = 4; num < 9; num++) {
-                var freqPos = this.#crudeData[dataBloc]
-                freqPos = parseInt(freqPos[num])
-                if (num<5&&day>0&&day<3) console.log(freqPos)
-                this.#data[dataBloc].normal.freq[freqPos]++
-            }
-            // num chance
-            this.#data[dataBloc].chance.freq[freqPos+49]++            
-        }        
+        console.log(this.#data)
+        // for (let day = 1; day < this.#data[dataBloc].nbtirages; day++) {
+        //     for (var num = 4; num < 9; num++) {
+        //         var freqPos = this.#crudeData[dataBloc]
+        //         freqPos = parseInt(freqPos[num])
+        //         console.log(freqPos)
+        //         this.#data[dataBloc].normal.freq[freqPos]++
+        //     }
+        //     // num chance
+        //     this.#data[dataBloc].chance.freq[freqPos+49]++            
+        // }        
     }
     /**
      * fait le tri selon la fréquence des nombre et rien d'autre !
@@ -246,14 +248,6 @@ class LotoAnalyser{
 
     }
 
-    /**
-     * switch :
-     *  - by order of draw
-     *  - by number frequency
-     */
-    toggleSort(){
-        this.#sort = !this.#sort
-    }
 
     /////////////// GETTERS ///////////
 
@@ -290,6 +284,53 @@ class LotoAnalyser{
 
     get isSortedByFreq(){
         return this.#sort
+    }
+
+    /**
+     * permet de recupérer les valeurs clefs de la/les série(s) de donné(es):
+     * 
+     * @param {*} numSerie numério de a série a analser (si c'est null ou sans paramètre
+     * c'est considéré sur l'ensemble des données)
+     * @returns {object} objet contenant tous les attributs clef (clef-valeur)
+     *  
+     * - max ("")
+     * - min ("")
+     * - moyenne (avg)
+     * - somme totale (sum)
+     * - etendue (stretch)
+     * - variance (var)
+     * - quartile (Q1,Q3,IQ)
+     * - esperance (exp for expectation)
+     * - niveau de confiance 95% (trustL95)
+     * - kurtosis (kur)
+     * - erreur type (pour l'nalyse des intervalles de confiance) (errType)
+     * 
+     * @warning :
+     *      dans chaque type de valeurs clefs les données seront produite 
+     *      uniquement si c'est possible !
+     */
+    getKeyValues(numSerie=null){
+        let tmp = 0
+        let res = {
+            min: 0,
+            max: 0,
+            avg: 0,
+            sum: 0,
+            stretch: 0,
+            var: 0,
+            q1: 0,
+            q3: 0,
+            iq: this.q3-this.q1,
+            exp: 0,
+            trustL95: 0,
+            kur: 0,
+            errTyp: 0
+        }
+        //@acoder #acoder #a_coder #aCoder @aCoder a coder
+        // parcours des données et remplisage de "res" ligne par ligne
+        // a calculer après le boucle si nécessaire (pour la moyenne par exemple)
+        return res
+
     }
 
     /**

@@ -2,23 +2,18 @@ découper les données : structurer les données de la bonne manière pour les f
 - supprimer le php dans la page et passer le tout en json (formatté avec une fonction maison, car sur le web c'est trés compliqué a utiliser)
 
 
-- 1 verifier que c'est possible d'nevoyer une requete de type fichier depuis js sans utiliser de serveur (pour le coté portable)
-- 2 formater le fichichier d'entrée (texte) pour ensuite le parser en json (avec les règles regex si necessaire)
-- 3 perser en json (objet utilisable)
-- 4 re-tester la méthode pour verifier que toue est bonne
-- 5 si necesaire fusionner les types de graphiques en un seul avec un méthode supplémentaire (ou autre technique(s))
-- 6 constater la progression/fin du projet
-- 7 ajouter des chiffres clefs
-- 8 ajouter des données et autres informations utiles a traiter
-- 9 faire pareil pour l'EuroMillion
-
+- corriger la structure du merge() pour que ça fonctionne 
+    sur la novuelle structure de données
 
 informations utiles : 
 
 tris possibles : 
-
+    - frequence des apparition des numéro 1 a 1
+    - pareil que dessus mais avec toute la combinaisons d'un 
+        tirage (en général journalié normalement ^^)
     - numéro les plus sortis 
-    - numéro qui const les plus scuceptibles de sortir (contraire des fréquences les plus élevées)
-        car il se peut qu'a force de les tirer les chiffres apparaissent moins en terme de proba (ce qui est logique)
-    - numéros sortis en dernier/premier
+    - numéro qui const les plus scuceptibles de sortir
+        (contraire des fréquences les plus élevées)
+        car il se peut qu'a force de les tirer les chiffres 
+        apparaissent moins en terme de proba (ce qui est logique)
     
