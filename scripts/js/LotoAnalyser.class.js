@@ -122,15 +122,14 @@ class LotoAnalyser{
      * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique     * 
      */
     #freqByNum(dataBloc){
-        console.log(this.#data)
-        for (let day = 1; day < this.#data[dataBloc].nbtirages; day++) {
+        console.log("données de l'analyse: (out)",this.#data)
+        for (let day = 1; day <= this.#data[dataBloc].nbtirages; day++) {
             for (var num = 4; num < 9; num++) {
                 var freqPos = this.#crudeData[dataBloc][day]
-                freqPos = parseInt(freqPos[num])
-                this.#data[dataBloc].normal.freq[freqPos]++
+                this.#data[dataBloc].normal.freq[parseInt(freqPos[num])-1]++
             }
             // num chance
-            this.#data[dataBloc].chance.freq[freqPos+49]++            
+            this.#data[dataBloc].chance.freq[parseInt(freqPos[9])+48]++  
         }        
     }
     /**
@@ -266,13 +265,13 @@ class LotoAnalyser{
         return {
                 // 1,2,3,etc...49,null,null,etc (10x)
                 normal: {
-                    titre: title,
+                    title: title,
                     freq: tpmFreq,
                     color: color
                 },
                 // nul,null,null,etc...,1,2,3,4,etc...10
                 chance: {
-                    titre: title+"(n°chance)",
+                    title: title+"(n°chance)",
                     freq: tmpFreqC,
                     color: darkener(color)
                 },
@@ -357,7 +356,7 @@ class LotoAnalyser{
         for (i = 0; i < this.#data.length; i++) {
             datasFinal.push(
                 {
-                    label: this.#data[i].normal.titre,
+                    label: this.#data[i].normal.title,
                     data: this.#data[i].normal.freq,
                     fill: false,
                     borderColor: this.#data[i].normal.color,
@@ -365,7 +364,7 @@ class LotoAnalyser{
                     backgroundColor: "#bfbfbf"
                 },
                 {
-                    label: this.#data[i].chance.titre,
+                    label: this.#data[i].chance.title,
                     data: this.#data[i].chance.freq,
                     fill: false,
                     borderColor: this.#data[i].chance.color,
