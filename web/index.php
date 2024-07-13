@@ -91,11 +91,11 @@
     let analyseLoto = new LotoAnalyser(
         crudeData,
         "grand dec2017-dec2018",
-        "#5555ff"
+        "#3333dd"
     );
     crudeData = JSON.parse(<?php 
             echo csv2Json('../donnees/grand_loto/2 grand_dec2019-dec2023.csv');
-        ?>        
+        ?>
     )
     analyseLoto.addData(
         crudeData,
