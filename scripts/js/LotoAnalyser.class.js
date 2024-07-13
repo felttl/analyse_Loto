@@ -54,13 +54,12 @@ class LotoAnalyser{
         this.#crudeData.push(data)
         // nettoyage des imperfections
         this.#crudeData[this.#items][0][0] = this.#crudeData[this.#items][0][0][0]
-        console.log(data)
         // on rajoute un bloc de données utile(vide) avec la bonne structure (exploitable plus facilement)
         let tmp = this.#getDataSetup(title,color)
         tmp.nbtirages = this.#crudeData[this.#items].length-1
         this.#data.push(tmp)
         this.calcFrequency(this.#items)
-        this.#items++  
+        this.#items++
     }
 
 
@@ -81,24 +80,26 @@ class LotoAnalyser{
             idx=this.#crudeData.length-1
         const headtop = this.#crudeData[idx][0] // "header" interdit comme nom de variable       
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
-            throw new Error("entête de fichier incorrect: "+ headtop)
+            throw new Error("file weft incorrect: "+ headtop)
+        if(this.#wasAnalysed)
+            console.warn("Warning: data produced for analysis will be deleted and made again when continuing")
         const pos = idx === null ? this.#crudeData.length-1 : idx
         switch (this.#sort) {
             case 0:
                 this.#freqByNum(pos)
-                break;
+                break
             case 1|2:
                 // a coder
 
-                break;   
+                break
             case 3:
                 // a coder
                 
-                break;                   
+                break
             case 4:
                 // a coder
 
-                break;   
+                break 
             default:
                 throw new Error(`invalid sorting identifier : id=(${this.#sort})<0 or >max`)
                 break
@@ -117,23 +118,20 @@ class LotoAnalyser{
      */
 
     /**
-     * fait le tri selon la fréquence des nombre et rien d'autre !
-     * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique
-     * @param {boolean} luckyIn false frequence des nombres chance non calculés, true il sont inclus
-     * 
+     * fait le calcul de la fréquence des nombre tirés par nombre par tirage et rien d'autre !
+     * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique     * 
      */
-    #freqByNum(dataBloc,luckyIn=false){
+    #freqByNum(dataBloc){
         console.log(this.#data)
-        // for (let day = 1; day < this.#data[dataBloc].nbtirages; day++) {
-        //     for (var num = 4; num < 9; num++) {
-        //         var freqPos = this.#crudeData[dataBloc]
-        //         freqPos = parseInt(freqPos[num])
-        //         console.log(freqPos)
-        //         this.#data[dataBloc].normal.freq[freqPos]++
-        //     }
-        //     // num chance
-        //     this.#data[dataBloc].chance.freq[freqPos+49]++            
-        // }        
+        for (let day = 1; day < this.#data[dataBloc].nbtirages; day++) {
+            for (var num = 4; num < 9; num++) {
+                var freqPos = this.#crudeData[dataBloc][day]
+                freqPos = parseInt(freqPos[num])
+                this.#data[dataBloc].normal.freq[freqPos]++
+            }
+            // num chance
+            this.#data[dataBloc].chance.freq[freqPos+49]++            
+        }        
     }
     /**
      * fait le tri selon la fréquence des nombre et rien d'autre !
@@ -416,7 +414,7 @@ class LotoAnalyser{
 
 
     debug(){
-        console.log('%cdebugg mode!', 'color: #229922; font-weight: bold; background-color: #8dd38d55')
+        console.log('%cdebugg mode!', 'color: #22ff22; font-weight: bold; background-color: #114411')
         console.log("données brut: ",this.#crudeData)
         console.log("partie frequence : ")
         console.log(this.config)
