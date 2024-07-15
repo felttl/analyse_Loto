@@ -2,12 +2,17 @@
 arrayRange=(a,b,c) => Array.from({length:(b-a)/c+1},(d,e)=>a+e*c)  
 zfill = (str,n)=> typeof(str) === "string" ? str.length < n ? str+("0".repeat(n-str.length)) : str : new Error(`(${str}) is not string`)
 
-// assombri une couleur
-function darkener(colorHex){
+/**
+ * assombri une couleur
+ * @param {*} colorHex couleur hexadécimale format : #rrvvbb exemple : #67b09f
+ * @param {*} ratio entre 0 et 1
+ */
+function darkener(colorHex,ratio=0.9){
 	let res = "#"
+    ratio %= 1 // securité
 	const tmp = colorHex.substr(1) // remove '#'
     for (let i=0;i<3;i++)
-    	res += zfill(Math.round(parseInt("0x"+tmp.substr(i*2,2))*0.9).toString(16),2)
+    	res += zfill(Math.round(parseInt("0x"+tmp.substr(i*2,2))*ratio).toString(16),2)
     return res
 }
 
@@ -82,7 +87,7 @@ class LotoAnalyser{
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("file weft incorrect: "+ headtop)
         if(this.#wasAnalysed)
-            console.warn("Warning: data produced for analysis will be deleted and made again when continuing")
+            console.warn("Warning: data produced for analysis will be deleted and made again when continuing\nin:\tLotoAnalyser->calcFrequency()")
         const pos = idx === null ? this.#crudeData.length-1 : idx
         switch (this.#sort) {
             case 0:
@@ -129,7 +134,7 @@ class LotoAnalyser{
                 this.#data[dataBloc].normal.freq[parseInt(freqPos[num])-1]++
             }
             // num chance
-            this.#data[dataBloc].chance.freq[parseInt(freqPos[9])+48]++  
+            this.#data[dataBloc].normal.freq[parseInt(freqPos[9])+48]++  
         }        
     }
     /**
@@ -248,32 +253,25 @@ class LotoAnalyser{
 
     /////////////// GETTERS ///////////
 
-    // renvoie un setup vide
+    /**
+     * renvoie un setup vide
+     * @param {*} title 
+     * @param {*} color 
+     * @returns 
+     */
     #getDataSetup(title,color){
         // initialisation des frequences
         let tpmFreq = []
-        let tmpFreqC = []
         // remplissage du vide pour la supperposition        
-        for (var i = 1; i < 50; i++){
+        for (var i = 1; i < 60; i++){
             tpmFreq.push(0)
-            tmpFreqC.push(null)
         }
-        for (; i < 60; i++){ 
-            tpmFreq.push(null)
-            tmpFreqC.push(0) 
-        }  
         return {
-                // 1,2,3,etc...49,null,null,etc (10x)
+                // 1,2,3,etc...59,null,null,etc (10x)
                 normal: {
                     title: title,
                     freq: tpmFreq,
                     color: color
-                },
-                // nul,null,null,etc...,1,2,3,4,etc...10
-                chance: {
-                    title: title+"(n°chance)",
-                    freq: tmpFreqC,
-                    color: darkener(color)
                 },
                 nbtirages: 0
         }
@@ -362,14 +360,6 @@ class LotoAnalyser{
                     borderColor: this.#data[i].normal.color,
                     tension: 0.1,
                     backgroundColor: "#bfbfbf"
-                },
-                {
-                    label: this.#data[i].chance.title,
-                    data: this.#data[i].chance.freq,
-                    fill: false,
-                    borderColor: this.#data[i].chance.color,
-                    tension: 0.1,
-                    backgroundColor: "#bfbfbf"                    
                 }
             )
         }
@@ -413,10 +403,14 @@ class LotoAnalyser{
 
 
     debug(){
-        console.log('%cdebugg mode!', 'color: #22ff22; font-weight: bold; background-color: #114411')
-        console.log("données brut: ",this.#crudeData)
-        console.log("partie frequence : ")
-        console.log(this.config)
+        // coloration pour le repérage (couleur titre + couleur aténuée pour le contenu)
+        const zomgreen = (...txt)=>console.log(`%c${txt}`,'color: #22ff22; font-weight: bold; background-color: #114411')
+        const zomsgreen = (...txt)=>console.log(`%c${txt}`,'color: black; font-weight: bold; background-color: #11ff1144')
+        zomgreen('debugg mode!')
+        zomsgreen("données brutes: ")
+        zomsgreen(this.#crudeData)
+        zomsgreen("partie frequence : ")
+        zomsgreen(this.config)
     }
 
 
