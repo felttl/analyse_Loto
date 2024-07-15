@@ -127,7 +127,6 @@ class LotoAnalyser{
      * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique     * 
      */
     #freqByNum(dataBloc){
-        console.log("données de l'analyse: (out)",this.#data)
         for (let day = 1; day <= this.#data[dataBloc].nbtirages; day++) {
             for (var num = 4; num < 9; num++) {
                 var freqPos = this.#crudeData[dataBloc][day]
@@ -165,9 +164,13 @@ class LotoAnalyser{
      * @param {Array} allToMerge 2 elements minimum (liste d'entiers des position des données 
      * dans le calcule des fréquences effectués par la classe, exemple : [1,4] prend la donné a la position 1 et 4, 2 éléments minimum dans la liste)
      * on peut metttre plusieurs foir la même nombre pour "dupliquer" les fréquences ou les "doubler"
-     * @param {int|null} toFinal merge all to existing one or if null creating a new one
+     * @param {int|null} tofinal types possibles : 
+     * - null créer une nouvelle analyse pour l'ajouter a la liste des analyses
+     * - number [0-n] position de l'élément ou ajouter les autres données (fusion finale)
+     * @param {bool} rmMerged si true supprime les datasets qui ont étés utilisé pour fuionner les données
+     * false sinon on ne supprime rien (true par defaut)
      */
-    merge(allToMerge, toFinal){
+    merge(allToMerge, toFinal, rmMerged=true){
         if(this.#wasAnalysed)
             console.warn("in: LotoAnalyser->merge()\n\tWarning:\t don't merge with different analyse mode, it can produce weird analysis")
         const reuse = `allToMerge=${allToMerge}, tofinal=${toFinal}`
@@ -176,8 +179,17 @@ class LotoAnalyser{
         if(allToMerge.length < 2 && toFinal === null) 
             throw new Error(`${reuse} 2 elements required for merge at least !`)
         if(allToMerge.length < 1 && toFinal !== null)
-            throw new Error(`${reuse} 2 elements required for merge at least !`)            
-
+            throw new Error(`${reuse} 2 elements required for merge at least !`) 
+        // verification que tous les sets de données ont le même type d'analyse
+        const tofinalType = this.#data[toFinal].analyseType
+        let currentAnalysTyp = null
+        for (let i = 0; i < allToMerge.length; i++) {
+            currentAnalysTyp = this.#data[allToMerge[i]].analyseType
+            if(tofinalType !== currentAnalysTyp)
+                throw new Error(`Analysis type is different: tofinal analysis 
+                type is : ${tofinalType}\n allToMerge[${i}] (=${allToMerge[i]}) 
+                type is: ${currentAnalysTyp}`)
+        }           
         if(toFinal === null){
             let finalElem = this.#getDataSetup("no title set", "#222222")
             finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
@@ -189,65 +201,44 @@ class LotoAnalyser{
             let allNbData = this.#crudeData[toFinal][0].length  
             // calcule de la somme du nombre de données (nb de jours)
             for (let j = 0; j < allToMerge.length; j++) {
-                allNbData += this.#crudeData[allToMerge[j]][0].length   
+                allNbData += this.#data[allToMerge[j]].nbtirages
             }
             finalElem.nbtirages = allNbData
+            finalElem.analyseType = tofinalType
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
-            // pour chaque bloc de données
-            for (let i = 0; i < 50; i++) {
-                if(this.#data[k].normal.freq[i] !== null)
-                    finalElem.normal.freq[i]+=this.#data[k].normal.freq[i]
-            }
-            for (;i<60;i++) {
-                if(this.#data[i].chance.freq[i] !== null)
-                    finalElem.chance.freq[i]+=this.#data[k].chance.freq[i]
-            }                     
+            // pour chaque numéros tirés
+            for (let i = 0; i < 60; i++) {
+                finalElem.normal.freq[i]+=this.#data[allToMerge[k]].normal.freq[i]
+            }                    
         }
         // placement des données
         if(toFinal == null){
             this.#data.push(finalElem)
         } else {
-            for (let i=0; i<50; i++) {
-                if(finalElem.normal.freq[i] !== null)
-                    this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
-            }               
-            for (;i<60;i++) {
-                if(finalElem.chance.freq[i] !== null)
-                    this.#data[toFinal].chance.freq[toFinal]+=finalElem.chance.freq[i]
-            }               
+            for (let i=0; i<60; i++) {
+                this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
+            }
         }
-        this.#reorder(allToMerge)
+        if(rmMerged)
+            this.#reorder(allToMerge)
         
     }
-    /**
-     * permet de supprimer les éléments fusionnés une fois les données fusionnées
-     * @param {[int]} useless liste des indexes dont les données ont étés fusionnées
-     * @param {int} toDest destination des données (index)
-     */
-    #reorder(useless,toDest){
-        if(useless.length < 2) 
-            throw new Error(`${useless} lenght < 2 !`)
-        if(typeof(toDest) !== "int" | toDest !== null) 
-            throw new Error(`${toDest} must be int or null !`);
-        if(this.dataNumber <= 1) 
-            throw new Error("nombre de donnée d'entrées insuffisantes minimum 2, ("+this.dataNumber+") trouvé(es)")
-        // verifie que les indexes sont correctes
-        for (let i = 0; i < useless.length; i++) {
-            if(useless[i] < 0) 
-                throw new Error(`value not in range : useless[${i}]<0||allToMerge[${i}]>${this.dataNumber}`)
-            else if (allToMerge[i] >= this.dataNumber) 
-                throw new Error(`value out of range (${this.dataNumber})`)
-        }
-        if(toDest < 0) 
-            throw new Error(`toDest out of range (${toDest}<0)`)
-        for (let i = 0; i < useless; i++) {
-            if(useless[i] !== toDest) // on supprime pas la destination si elle se trouve dans les "useless"
-                this.#data.splice(useless[i],1)
-        }
-        
 
+    /**
+     * permet de supprimer les éléments qui ont servi a la fusion après que celles-ci soient fusionnées
+     * @param {[int]} useless liste des indexes des données à supprimer
+     * @param {bool} isRmIntoCrude si true supprimera aussi les données 
+     * présentes dans les liste de données dans les données brutes (false par défaut)
+     * 
+     */
+    #reorder(useless, isRmIntoCrude=false){
+        for (let i = 0; i < useless.length; i++) {
+            this.#data.splice(useless[i],1)
+            if(isRmIntoCrude)
+                this.#crudeData.splice(useless[i],1)
+        }
     }
 
 
@@ -273,7 +264,8 @@ class LotoAnalyser{
                     freq: tpmFreq,
                     color: color
                 },
-                nbtirages: 0
+                nbtirages: 0,
+                analyseType: null
         }
     }
 

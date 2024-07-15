@@ -3,7 +3,13 @@ découper les données : structurer les données de la bonne manière pour les f
 
 
 - corriger la structure du merge() pour que ça fonctionne 
-    sur la novuelle structure de données
+    sur la nouvelle structure de données
+    - a ameliorer sur la partie fusion avec d'autres type d'analyse 
+        que la fréquences de numéros (unique filtre)
+- corriger le problèmes de maj auto lorsque l'on choisi un nouveau filtre
+    dans la liste déroulante
+    (potentiellement un découplage des données du flux principal)
+    
 
 informations utiles : 
 
