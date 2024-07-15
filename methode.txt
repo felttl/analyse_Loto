@@ -9,11 +9,12 @@ découper les données : structurer les données de la bonne manière pour les f
 - corriger le problèmes de maj auto lorsque l'on choisi un nouveau filtre
     dans la liste déroulante
     (potentiellement un découplage des données du flux principal)
-    
+
 
 informations utiles : 
 
 tris possibles : 
+- code 0
     - frequence des apparition des numéro 1 a 1
     - pareil que dessus mais avec toute la combinaisons d'un 
         tirage (en général journalié normalement ^^)
