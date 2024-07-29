@@ -102,6 +102,7 @@
         "grand dec2019-dec2023",
         "#7777ff"
     )
+    // analyseLoto.merge([0],1)
     analyseLoto.debug()
 
 

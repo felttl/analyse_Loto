@@ -106,7 +106,7 @@ class LotoAnalyser{
 
                 break 
             default:
-                throw new Error(`invalid sorting identifier : id=(${this.#sort})<0 or >max`)
+                throw new Error(`invalid sort identifier : id=(${this.#sort})<0 or >max`)
                 break
         }
         this.#wasAnalysed=true        
@@ -137,7 +137,7 @@ class LotoAnalyser{
         }        
     }
     /**
-     * fait le tri selon la fréquence des nombre et rien d'autre !
+     * fréquences des jours des tirages
      */
     #freqByDailyCombination(dataBloc){
         for (let day = 0; day < this.#data[pos].nbtirages; day++) {
@@ -174,8 +174,8 @@ class LotoAnalyser{
         if(this.#wasAnalysed)
             console.warn("in: LotoAnalyser->merge()\n\tWarning:\t don't merge with different analyse mode, it can produce weird analysis")
         const reuse = `allToMerge=${allToMerge}, tofinal=${toFinal}`
-        if(typeof(toFinal) !== "int" && toFinal !== "null") 
-            throw new Error(`${toFinal} must be int or null !`)        
+        if(typeof(toFinal) !== "number" && toFinal !== "null") 
+            throw new Error(`${toFinal} must be integer/number or null !`)        
         if(allToMerge.length < 2 && toFinal === null) 
             throw new Error(`${reuse} 2 elements required for merge at least !`)
         if(allToMerge.length < 1 && toFinal !== null)
@@ -189,22 +189,13 @@ class LotoAnalyser{
                 throw new Error(`Analysis type is different: tofinal analysis 
                 type is : ${tofinalType}\n allToMerge[${i}] (=${allToMerge[i]}) 
                 type is: ${currentAnalysTyp}`)
-        }           
+        }    
+        let finalElem =null
         if(toFinal === null){
-            let finalElem = this.#getDataSetup("no title set", "#222222")
+            finalElem = this.#getDataSetup("no title set", "#222222")
             finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
         } else {
-            let finalElem = this.#getDataSetup(
-                this.#data[toFinal].normal.title,
-                this.#data[toFinal].normal.color
-            )    
-            let allNbData = this.#crudeData[toFinal][0].length  
-            // calcule de la somme du nombre de données (nb de jours)
-            for (let j = 0; j < allToMerge.length; j++) {
-                allNbData += this.#data[allToMerge[j]].nbtirages
-            }
-            finalElem.nbtirages = allNbData
-            finalElem.analyseType = tofinalType
+            finalElem = this.#data[tofinal]
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
@@ -251,22 +242,30 @@ class LotoAnalyser{
      * @returns 
      */
     #getDataSetup(title,color){
-        // initialisation des frequences
-        let tpmFreq = []
-        // remplissage du vide pour la supperposition        
-        for (var i = 1; i < 60; i++){
-            tpmFreq.push(0)
+        let res=null
+        switch (this.#sort) {
+            case 0:
+                // initialisation des frequences
+                let tpmFreq = []
+                // remplissage du vide pour la supperposition        
+                for (var i = 1; i < 60; i++){
+                    tpmFreq.push(0)
+                }
+                res = {
+                        // 1,2,3,etc...59,1,2,...,10 (49x+10x)
+                        normal: {
+                            title: title,
+                            freq: tpmFreq,
+                            color: color
+                        },
+                        nbtirages: 0,
+                        analyseType: this.#sort
+                }                
+                break;
+            default:
+                throw new Error("sort code is unknown ("+this.#sort+")")
         }
-        return {
-                // 1,2,3,etc...59,null,null,etc (10x)
-                normal: {
-                    title: title,
-                    freq: tpmFreq,
-                    color: color
-                },
-                nbtirages: 0,
-                analyseType: null
-        }
+        return res
     }
 
     get isSortedByFreq(){
@@ -334,26 +333,35 @@ class LotoAnalyser{
      */
     get config(){
         let datasFinal = []   
-        let loterylabels = []     
-        for (var i = 1; i < 60; i++) {
-            let elem = "freq"
-            if(i>49)
-                elem+=" chance de "+(i-49)
-            else
-                elem+=" de "+i
-            loterylabels.push(elem)
-        }
-        for (i = 0; i < this.#data.length; i++) {
-            datasFinal.push(
-                {
-                    label: this.#data[i].normal.title,
-                    data: this.#data[i].normal.freq,
-                    fill: false,
-                    borderColor: this.#data[i].normal.color,
-                    tension: 0.1,
-                    backgroundColor: "#bfbfbf"
+        let loterylabels = []          
+        switch (this.#sort) {
+            case 0:
+                for (var i = 1; i < 60; i++) {
+                    let elem = "freq"
+                    if(i>49)
+                        elem+=" chance de "+(i-49)
+                    else
+                        elem+=" de "+i
+                    loterylabels.push(elem)
                 }
-            )
+                for (i = 0; i < this.#data.length; i++) {
+                    datasFinal.push(
+                        {
+                            label: this.#data[i].normal.title,
+                            data: this.#data[i].normal.freq,
+                            fill: false,
+                            borderColor: this.#data[i].normal.color,
+                            tension: 0.1,
+                            backgroundColor: "#bfbfbf"
+                        }
+                    )
+                }                
+                break;
+            case 1:
+                // a coder
+                break;
+            default:
+                throw new Error("sort code is unknown ("+this.#sort+")")
         }
         return {
             type: 'line',
@@ -387,7 +395,7 @@ class LotoAnalyser{
     setSortType(id=0){
         // coherence test
         if(typeof(id)!=="number" && Math.floor(id)!==id)
-            throw new Error(`id (${id}) is not an integer`)
+            throw new Error(`id (${id}) is not an integer/number`)
         if(id < 0)
             throw new Error(`id ${id} out of range (id<0)`)
         this.#sort=id
