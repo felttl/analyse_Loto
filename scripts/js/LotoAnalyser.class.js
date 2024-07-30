@@ -205,12 +205,10 @@ class LotoAnalyser{
             }                    
         }
         // placement des données
-        if(toFinal == null){
+        if(toFinal === null){
             this.#data.push(finalElem)
         } else {
-            for (let i=0; i<60; i++) {
-                this.#data[toFinal].normal.freq[toFinal]+=finalElem.normal.freq[i]
-            }
+            this.#data[toFinal] = finalElem
         }
         if(rmMerged)
             this.#reorder(allToMerge)
