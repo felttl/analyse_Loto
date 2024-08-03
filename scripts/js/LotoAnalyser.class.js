@@ -41,7 +41,7 @@ class LotoAnalyser{
 
     #crudeData = [] // matrix (arrays)
     #data = []
-    #items = 0
+    #items = 0 // nb d'éléments dans data
     #sort = 0 // par ferquence des numbres tirés (pour chaque nombres, par defaut c'est 0)
     #wasAnalysed = false
 
@@ -139,13 +139,11 @@ class LotoAnalyser{
     /**
      * fréquences des jours des tirages
      */
-    #freqByDailyCombination(dataBloc){
+    #freqByDays(dataBloc){
         for (let day = 0; day < this.#data[pos].nbtirages; day++) {
             // a coder
         }        
     }
-
-    // rajoute les valeur clefs (moy, mid, diff, granddiff, eqtype, QTS)
 
     /**
      * calcule toutes les fréquence pour tous les blocs de données
@@ -170,7 +168,7 @@ class LotoAnalyser{
      * @param {bool} rmMerged si true supprime les datasets qui ont étés utilisé pour fuionner les données
      * false sinon on ne supprime rien (true par defaut)
      */
-    merge(allToMerge, toFinal, rmMerged=true){
+    merge(allToMerge, toFinal, rename=" ", rmMerged=true){
         if(this.#wasAnalysed)
             console.warn("in: LotoAnalyser->merge()\n\tWarning:\t don't merge with different analyse mode, it can produce weird analysis")
         const reuse = `allToMerge=${allToMerge}, tofinal=${toFinal}`
@@ -204,6 +202,7 @@ class LotoAnalyser{
                 finalElem.normal.freq[i]+=this.#data[allToMerge[k]].normal.freq[i]
             }                    
         }
+        finalElem.normal.title=rename
         // placement des données
         if(toFinal === null){
             this.#data.push(finalElem)
@@ -212,6 +211,7 @@ class LotoAnalyser{
         }
         if(rmMerged)
             this.#reorder(allToMerge)
+        
         
     }
 
@@ -225,6 +225,7 @@ class LotoAnalyser{
     #reorder(useless, isRmIntoCrude=false){
         for (let i = 0; i < useless.length; i++) {
             this.#data.splice(useless[i],1)
+            this.#items--
             if(isRmIntoCrude)
                 this.#crudeData.splice(useless[i],1)
         }

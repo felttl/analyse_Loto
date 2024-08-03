@@ -102,8 +102,40 @@
         "grand dec2019-dec2023",
         "#7777ff"
     )
-    analyseLoto.merge([0],1)
-    analyseLoto.debug()
+    analyseLoto.merge([0],1,"grand 2017-18-19-23")
+    crudeData = JSON.parse(<?php 
+            echo csv2Json("../donnees/normal_loto/1 normal_mai1976-oct2008.csv");
+        ?>
+    )
+    analyseLoto.addData(
+        crudeData,
+        "normal mai1976-oct2008",
+        "ff2222"
+    )
+    // reajouter ce bloc de données plante le programme chart.js 
+    // plante quelque soit le bloc de données
+
+    // crudeData = JSON.parse(<?php 
+    //         echo csv2Json("../donnees/normal_loto/2 normal_oct2008-mar2017.csv");
+    //     ?>
+    // )
+    // analyseLoto.addData(
+    //     crudeData,
+    //     "normal oct2008-mar2017",
+    //     "ff7777"
+    // )    
+
+    // crudeData = JSON.parse(<?php 
+    //         echo csv2Json("../donnees/normal_loto/3 loto_mar2017-fev2019.csv");
+    //     ?>
+    // )
+    // analyseLoto.addData(
+    //     crudeData,
+    //     "normal mar2017-fev2019",
+    //     "774444"
+    // )  
+
+    
 
 
     // analyse pour l'euromillion
