@@ -190,12 +190,12 @@ class LotoAnalyser{
                 type is : ${tofinalType}\n allToMerge[${i}] (=${allToMerge[i]}) 
                 type is: ${currentAnalysTyp}`)
         }    
-        let finalElem =null
+        let finalElem = null
         if(toFinal === null){
             finalElem = this.#getDataSetup("no title set", "#222222")
             finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
         } else {
-            finalElem = this.#data[tofinal]
+            finalElem = this.#data[toFinal]
         }
         // pour tous les éléments a fusionner vers la destination
         for (let k = 0; k < allToMerge.length; k++) {
@@ -219,7 +219,7 @@ class LotoAnalyser{
      * permet de supprimer les éléments qui ont servi a la fusion après que celles-ci soient fusionnées
      * @param {[int]} useless liste des indexes des données à supprimer
      * @param {bool} isRmIntoCrude si true supprimera aussi les données 
-     * présentes dans les liste de données dans les données brutes (false par défaut)
+     * présentes dans les données brutes (false par défaut)
      * 
      */
     #reorder(useless, isRmIntoCrude=false){
