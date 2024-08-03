@@ -50,11 +50,12 @@
     --test: #f2ff00;
 }
 
-*{
+*,option{
     background-color: var(--col-th-bg);
     font-family: Fredoka-Regular;
     margin: 0 auto;
 }
+
 html{
   background-color: transparent;
 }

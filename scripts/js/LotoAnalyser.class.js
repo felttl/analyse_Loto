@@ -402,13 +402,14 @@ class LotoAnalyser{
 
     debug(){
         // coloration pour le repérage (couleur titre + couleur aténuée pour le contenu)
-        const zomgreen = (...txt)=>console.log(`%c${txt}`,'color: #22ff22; font-weight: bold; background-color: #114411')
-        const zomsgreen = (...txt)=>console.log(`%c${txt}`,'color: black; font-weight: bold; background-color: #11ff1144')
-        zomgreen('debugg mode!')
-        zomsgreen("données brutes: ")
-        zomsgreen(this.#crudeData)
-        zomsgreen("partie frequence : ")
-        zomsgreen(this.config)
+        const zomgreenh1 = (...txt)=>console.log(`%c${txt}`,'color: #22ff22; font-weight: bold; background-color: #114411')
+        const zomgreenh2 = (...txt)=>console.log(`%c${txt}`,'color: #11ff11; font-weight: bold; text-decoration: underline 1px #00ff00; text-underline-offset: 3px;')
+        const zomgreenp = (...txt)=>console.log(`%c${txt}`,'color: #11ff11')
+        zomgreenh1('debugg mode!')
+        zomgreenh2("données brutes :")
+        zomgreenp(this.#crudeData)
+        zomgreenh2("partie frequence :")
+        console.log(this.config)
     }
 
 

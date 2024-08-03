@@ -75,27 +75,27 @@ class LotoAnalyserDOM{
         for (let i = 0; i < this.#elems.length; i++) {
             tmpOpt=document.createElement("option")
             tmpOpt.innerHTML = this.#elems[i].txtDisplay
-            tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-1*i
+            tmpOptId = Math.trunc(randi(1e5,1e6-1))+1e-2*i
             tmpOpt.setAttribute('optId', tmpOptId);
-            // if(this.#elems[i].value === undefined || this.#elems[i].value === null)
-            //     tmpOpt[tmpOpt.selectedIndex].value = i
-            // else
-            //     tmpOpt[tmpOpt.selectedIndex].value = this.#elems[i].value
             this.#selectDOM.appendChild(tmpOpt)
         }
-        this.#selectDOM.firstChild.selected = true // first prior
+        // this.#selectDOM.firstChild.checked = true // first prior    
     }
+
     /**
      * supprime toutes les options du select qui ont l'attribut "optId"
      */
     clearSelect(){
         let _DOMElems = this.#selectDOM.getElementsByTagName("*")
         for (let i = 0; i < _DOMElems.length; i++) {
-            if(_DOMElems[i].getAttribute("optId")!==null)
+            if(_DOMElems[i].getAttribute("optId")!=null)
                 _DOMElems[i].remove()
         }      
         this.#elems = []  
+        // 1 élément reste obligatoire
+        this.#selectDOM[0].innerHTML="none"
     }
+    
 
 }
     
