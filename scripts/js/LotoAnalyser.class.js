@@ -406,11 +406,15 @@ class LotoAnalyser{
         const zomgreenh1 = (...txt)=>console.log(`%c${txt}`,'color: #22ff22; font-weight: bold; background-color: #114411')
         const zomgreenh2 = (...txt)=>console.log(`%c${txt}`,'color: #11ff11; font-weight: bold; text-decoration: underline 1px #00ff00; text-underline-offset: 3px;')
         const zomgreenp = (...txt)=>console.log(`%c${txt}`,'color: #11ff11')
-        zomgreenh1('debugg mode!')
-        zomgreenh2("données brutes :")
-        zomgreenp(this.#crudeData)
-        zomgreenh2("partie frequence :")
+        zomgreenh1('------- debugg mode! -------')
+        zomgreenh2("sets de données (brute)")
+        console.log(this.#crudeData)
+        zomgreenh2("sets de données (traitées)")
+        console.log(this.#data)
+        zomgreenh2("setup :")
         console.log(this.config)
+        zomgreenh2("------------------------------")
+        
     }
 
 

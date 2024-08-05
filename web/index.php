@@ -115,15 +115,17 @@
     // reajouter ce bloc de données plante le programme chart.js 
     // plante quelque soit le bloc de données
 
-    // crudeData = JSON.parse(<?php 
-    //         echo csv2Json("../donnees/normal_loto/2 normal_oct2008-mar2017.csv");
-    //     ?>
-    // )
-    // analyseLoto.addData(
-    //     crudeData,
-    //     "normal oct2008-mar2017",
-    //     "ff7777"
-    // )    
+    crudeData = JSON.parse(<?php 
+            echo csv2Json("../donnees/normal_loto/2 normal_oct2008-mar2017.csv");
+        ?>
+    )
+    analyseLoto.addData(
+        crudeData,
+        "normal oct2008-mar2017",
+        "ff7777"
+    )    
+
+    analyseLoto.debug()
 
     // crudeData = JSON.parse(<?php 
     //         echo csv2Json("../donnees/normal_loto/3 loto_mar2017-fev2019.csv");
