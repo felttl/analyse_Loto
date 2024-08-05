@@ -84,6 +84,9 @@ class LotoAnalyser{
         if(idx===null)
             idx=this.#crudeData.length-1
         const headtop = this.#crudeData[idx][0] // "header" interdit comme nom de variable       
+        console.log(`voici le headtop n°${this.#items}: ${headtop[4]} 
+            === 'boule_1' (normalement) && ${headtop[9]} === 'numero_chance'` )
+        // attention la condition ne marche pas bien (le throw ne s'effectue pas correctement alors que toutes les conditions sont respectées)
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("file weft incorrect: "+ headtop)
         if(this.#wasAnalysed)
