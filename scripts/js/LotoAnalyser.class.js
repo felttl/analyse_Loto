@@ -118,8 +118,7 @@ class LotoAnalyser{
 
     /**
      * O pour le tri numéro par numéro par fréquence d'apparation sans distinction
-     * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclu (pas num chance)
-     * 2 pareil que pour le 1 mais le n°chance est compris dedans
+     * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclus
      * 3 par fréquence des jours de la semaine des tirages (freq de lun a dim) 
      * 
      * 
