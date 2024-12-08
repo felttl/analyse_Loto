@@ -6,7 +6,6 @@
  * type d'analyse
  */
 
-
 class DatasetCreator{
 
     /**
