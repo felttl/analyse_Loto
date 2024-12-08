@@ -36,6 +36,11 @@ function getColorParts(partsNb){
 
 /**
  * gestion des données par fréquence (QTD)
+ * 
+ * O pour le tri numéro par numéro par fréquence d'apparation sans distinction
+ * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclus
+ * 3 par fréquence des jours de la semaine des tirages (freq de lun a dim) 
+ * @version 1.0.0
  */
 class LotoAnalyser{
 
@@ -44,9 +49,36 @@ class LotoAnalyser{
     #items = 0 // nb d'éléments dans data
     #sort = 0 // par ferquence des numbres tirés (pour chaque nombres, par defaut c'est 0)
     #wasAnalysed = false
+    #areAllLoaded = false
 
+    /**
+     * 
+     * @param {*} jsonData 
+     * @param {*} title 
+     * @param {*} color 
+     * @warning : il faut que tous les datasets soient chargés avant de faire tous les calculs
+     * car si l'utilisateur insère uniquement 1 dataset et faire un calcul de frequence dessus
+     * (par exemple) et que sur un autre qu'il vient d'ajouter il change de mode de synthétiseur
+     * de donnée on aura deux dataserts "data" non compatibles provenant de "crude data" 
+     * ou alors on doit 
+     * 
+     * @version 2.0.0 (OK)
+     */
     constructor (jsonData,title,color) {
-        this.addData(jsonData,title,color)    
+        if(!this.#areAllLoaded)
+            this.addData(jsonData,title,color)
+        else
+            throw new Error("datas have already been loaded you can't add data, it's time to analyse now");
+    }
+
+    /**
+     * indique que l'on a fini de charger les données 
+     * ATTENTION on ne peut pas revenir enn arrière
+     * @version 2.0.0 (OK)
+     */
+    setAllLoaded(){
+        this.#areAllLoaded = true
+        this.#allFrequency()
     }
 
 
@@ -54,27 +86,30 @@ class LotoAnalyser{
      * autorise la supperposition avec une couleur différente
      * @param {*} data données a jouter
      * @param {*} title titre des données
+     * @version 2.0.0 (OK)
      */
     addData(data,title,color){
         this.#crudeData.push(data)
         // nettoyage des imperfections
         this.#crudeData[this.#items][0][0] = this.#crudeData[this.#items][0][0][0]
         // on rajoute un bloc de données utile(vide) avec la bonne structure (exploitable plus facilement)
-        let tmp = this.#getDataSetup(title,color)
         tmp.nbtirages = this.#crudeData[this.#items].length-1
-        this.#data.push(tmp)
-        this.calcFrequency(this.#items)
+        this.#setupAllDatasets(title,color,this.#items)
         this.#items++
     }
 
 
+
+
     /**
-     * permet de calculer les fréquences d'un bloc a la fois 
-     * ,sans paramètre par défaut il fera le dernier élément des
+     * synthétise des information a partir des modes disponibles 
+     * d'un bloc a la fois, sans paramètre par défaut il fera le dernier élément des
      * données brutes ajouté
      * @param {*} idx index de l'élément sur lequel calculer les fréquences
+     * 
+     * @version 2.0.0 (OK)
      */
-    calcFrequency(idx=null){
+    #setupAllDatasets(title, color, idx=null){
         if(idx >= this.#crudeData.length) 
             throw new Error(`${idx}>${this.#crudeData.length} out of range`)
         if(idx < 0)
@@ -90,21 +125,23 @@ class LotoAnalyser{
         if(headtop[4] ==! "boule_1" && headtop[9] ==! "numero_chance") // control d'integrite
             throw new Error("file weft incorrect: "+ headtop)
         if(this.#wasAnalysed)
-            console.warn("Warning: data produced for analysis will be deleted and made again when continuing\nin:\tLotoAnalyser->calcFrequency()")
+            console.warn("Warning: data produced for analysis will be deleted and made again when continuing\nin:\tLotoAnalyser->#setupAllDatasets()")
         const pos = idx === null ? this.#crudeData.length-1 : idx
         switch (this.#sort) {
-            case 0:
-                this.#freqByNum(pos)
+            case 0: // synthetise la frequence des numeros tombes
+                this.#data[pos] = CreateNumberFrequencyDataset(
+                    title, color, this.#crudeData[pos]
+                )
                 break
-            case 1|2:
+            case 1:
                 // a coder
 
                 break
-            case 3:
+            case 2:
                 // a coder
                 
                 break
-            case 4:
+            case 3:
                 // a coder
 
                 break 
@@ -116,46 +153,20 @@ class LotoAnalyser{
     }
 
 
-    /**
-     * O pour le tri numéro par numéro par fréquence d'apparation sans distinction
-     * 1 pour le tri par fréquence des combinaisons journalières des numéro 1 a 5 inclus
-     * 3 par fréquence des jours de la semaine des tirages (freq de lun a dim) 
-     * 
-     * 
-     */
 
-    /**
-     * fait le calcul de la fréquence des nombre tirés par nombre par tirage et rien d'autre !
-     * @param {unsigned int} dataBloc fais les calcul sur un bloc de données spécifique     * 
-     */
-    #freqByNum(dataBloc){
-        for (let day = 1; day <= this.#data[dataBloc].nbtirages; day++) {
-            for (var num = 4; num < 9; num++) {
-                var freqPos = this.#crudeData[dataBloc][day]
-                this.#data[dataBloc].normal.freq[parseInt(freqPos[num])-1]++
-            }
-            // num chance
-            this.#data[dataBloc].normal.freq[parseInt(freqPos[9])+48]++  
-        }        
-    }
-    /**
-     * fréquences des jours des tirages
-     */
-    #freqByDays(dataBloc){
-        for (let day = 0; day < this.#data[pos].nbtirages; day++) {
-            // a coder
-        }        
-    }
 
     /**
      * calcule toutes les fréquence pour tous les blocs de données
+     * @version 2.0.0 (OK)
      */
     #allFrequency(){
         // blocs de données
+        if(!this.#areAllLoaded)
+            throw new Error("All data haven't been all loaded yet");
         if(this.#wasAnalysed)
             console.warn("be carefull data was already analysed and it can overwrite the analysis")
         for (let nbData=0;nbData<this.#items;nbData++){ 
-            this.calcFrequency(nbData)
+            this.#data[nbData] = this.#data[nbData].processDataset()
         }
     }
 
@@ -169,6 +180,7 @@ class LotoAnalyser{
      * - number [0-n] position de l'élément ou ajouter les autres données (fusion finale)
      * @param {bool} rmMerged si true supprime les datasets qui ont étés utilisé pour fuionner les données
      * false sinon on ne supprime rien (true par defaut)
+     * @version 1.0.0
      */
     merge(allToMerge, toFinal, rename=" ", rmMerged=true){
         if(this.#wasAnalysed)
@@ -192,7 +204,32 @@ class LotoAnalyser{
         }    
         let finalElem = null
         if(toFinal === null){
-            finalElem = this.#getDataSetup("no title set", "#222222")
+            switch (this.#sort) {
+                case 0:
+                    finalElem = this.data.dataset
+                    break;
+                case 1:
+
+                break
+
+                case 2:
+
+                break
+
+                case 3:
+
+                break
+
+                case 4:
+
+                break
+
+                default:
+                    throw new Error(`Sort type not found (${this.#sort})`);
+                    break;
+            }
+            // a modifier
+            finalElem = CreateNumberFrequencyDataset("no title set", "#222222").dataset()
             finalElem.nbtirages = this.#crudeData[this.#crudeData.length-1][0].length
         } else {
             finalElem = this.#data[toFinal]
@@ -236,38 +273,6 @@ class LotoAnalyser{
 
     /////////////// GETTERS ///////////
 
-    /**
-     * renvoie un setup vide
-     * @param {*} title 
-     * @param {*} color 
-     * @returns 
-     */
-    #getDataSetup(title,color){
-        let res=null
-        switch (this.#sort) {
-            case 0:
-                // initialisation des frequences
-                let tpmFreq = []
-                // remplissage du vide pour la supperposition        
-                for (var i = 1; i < 60; i++){
-                    tpmFreq.push(0)
-                }
-                res = {
-                        // 1,2,3,etc...59,1,2,...,10 (49x+10x)
-                        normal: {
-                            title: title,
-                            freq: tpmFreq,
-                            color: color
-                        },
-                        nbtirages: 0,
-                        analyseType: this.#sort
-                }                
-                break;
-            default:
-                throw new Error("sort code is unknown ("+this.#sort+")")
-        }
-        return res
-    }
 
     get isSortedByFreq(){
         return this.#sort
@@ -394,6 +399,8 @@ class LotoAnalyser{
      * 
      */
     setSortType(id=0){
+        if(!this.#areAllLoaded)
+            throw new Error("all datasets must be loaded before sort or change sort type")
         // coherence test
         if(typeof(id)!=="number" && Math.floor(id)!==id)
             throw new Error(`id (${id}) is not an integer/number`)
