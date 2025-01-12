@@ -99,8 +99,6 @@ class LotoAnalyser{
     }
 
 
-
-
     /**
      * synthétise des information a partir des modes disponibles 
      * d'un bloc a la fois, sans paramètre par défaut il fera le dernier élément des
@@ -201,13 +199,13 @@ class LotoAnalyser{
                 throw new Error(`Analysis type is different: tofinal analysis 
                 type is : ${tofinalType}\n allToMerge[${i}] (=${allToMerge[i]}) 
                 type is: ${currentAnalysTyp}`)
-        }    
+        }
         let finalElem = null
         if(toFinal === null){
             switch (this.#sort) {
                 case 0:
                     finalElem = this.data.dataset
-                    break;
+                    break
                 case 1:
 
                 break
@@ -291,7 +289,7 @@ class LotoAnalyser{
      * - somme totale (sum)
      * - etendue (stretch)
      * - variance (var)
-     * - quartile (Q1,Q3,IQ)
+     * - quartile (Q1,Q3,IQR)
      * - esperance (exp for expectation)
      * - niveau de confiance 95% (trustL95)
      * - kurtosis (kur)
@@ -312,7 +310,7 @@ class LotoAnalyser{
             var: 0,
             q1: 0,
             q3: 0,
-            iq: this.q3-this.q1,
+            iqr: this.q3-this.q1,
             exp: 0,
             trustL95: 0,
             kur: 0,
