@@ -73,12 +73,36 @@ class LotoAnalyser{
 
     /**
      * indique que l'on a fini de charger les données 
-     * ATTENTION on ne peut pas revenir enn arrière
+     * ATTENTION on ne peut pas revenir en arrière
      * @version 2.0.0 (OK)
      */
     setAllLoaded(){
         this.#areAllLoaded = true
         this.#allFrequency()
+        var tabNB = [1,45,2]
+        
+        var nouveauTab = tabNB.map(function(item){
+            return item * 2
+        })
+        console.log(nouveauTab) // renvoie un nouveau tableau 
+
+
+        // troisième façon de créer des objet, méthode avec un objet littéral
+        var objV = {
+            immat: "ED 9824 VQ",
+            marque: "Renault",
+            couleur: "rouge"
+        }
+
+        var objVoiture = new Object()
+        objVoiture.marque = "Cio"
+        objVoiture.marque = "clio"
+        objVoiture.immat = "ED 1234 VQ"
+        objVoiture.toString = function() {
+            return `voiture immatriculée ${this.immat} de marque ${this.marque}`
+        }
+        console.log(objVoiture.toString())
+
     }
 
 

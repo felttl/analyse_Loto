@@ -13,24 +13,21 @@
 */
 
 /*fonts -------------------------------------- */
+
+
 @font-face {
   font-family: Fredoka-Regular;
-  src: url('../font/Fredoka/static/Fredoka-Regular.ttf'); 
-}
-
-@font-face {
   font-family: Fredoka-Medium;
-  src: url('../font/Fredoka/static/Fredoka-Medium.ttf'); 
-}
-
-@font-face {
   font-family: Fredoka-Bold;
-  src: url('../font/Fredoka/static/Fredoka-Bold.ttf'); 
+  font-family: Fredoka-SemiBold;
 }
 
 @font-face {
-  font-family: Fredoka-SemiBold;
-  src: url('../font/Fredoka/static/Fredoka-SemiBold.ttf'); 
+  src: url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+}
+  
+*{
+  font-family: fredoka;
 }
 /* end fonts --------------------------------------   */
 

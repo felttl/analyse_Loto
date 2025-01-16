@@ -14,7 +14,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
-
+    <!-- import font (instead of downloading the font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
     <?php
     // importation des outils supplémentaires
     include_once "../scripts/php/fileManager/fileManager.php";
