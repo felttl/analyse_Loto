@@ -1,5 +1,5 @@
 
-## french lotery analysis
+# french lotery analysis
 ## analyse de loto
 ###### felix ttl, 10/05/2024 (2024-05-10 EN)
 [data source/source des données](https://www.fdj.fr/jeux-de-tirage/loto/historique)
